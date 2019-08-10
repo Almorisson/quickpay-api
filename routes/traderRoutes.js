@@ -8,7 +8,7 @@ const {
         unregister, update
         } = require('../controller/TradersController');
 
-const {isEmail, hasPassword, hasFirstName, hasLastName} = require('../validations/validators');
+const { isEmail, hasPassword, hasFirstName, hasLastName } = require('../validations/validators');
 const { authenticate } = require('../helpers/authHelpers');
 
 router.post('/register', register);

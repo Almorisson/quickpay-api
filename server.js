@@ -14,7 +14,7 @@ const passportJWT = require('./middlewares/passportJWT')();
 const app = express();
 // ENV Constants Variables
 const HOST = process.env.HOST || "127.0.0.1";
-const PORT = process.env.PORT || 8090;
+const PORT = process.env.PORT || 81;
 
 //Dotenv Config
 dotenv.config()
