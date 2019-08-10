@@ -1,3 +1,3 @@
 #  QuickPay Project
 ## Authors
-### Mor NDIAYE - Lucas CHEN- Maxime Flammant 
+### @author Mor NDIAYE - Lucas CHEN - Maxime Flammant 
