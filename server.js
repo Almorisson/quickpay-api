@@ -38,12 +38,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use('/uploads', express.static('uploads'));
+app.use('uploads', express.static('uploads'));
 app.use(passportJWT.initialize())
 
-app.use('/api/v1/customers', customerRoutes);
-app.use('/api/v1/transactions', paymentRoutes);
-app.use('/api/v1/traders', traderRoutes);
+app.use('api/v1/customers', customerRoutes);
+app.use('api/v1/transactions', paymentRoutes);
+app.use('api/v1/traders', traderRoutes);
 
 //app.use(unAuthorizedError)
 app.use(errors)
