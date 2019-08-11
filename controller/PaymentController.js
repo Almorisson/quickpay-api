@@ -8,7 +8,6 @@
 
 const paypal = require('../config/paypal')
 const validationHandler = require('../validations/validationHandler')
-const config = require('../config')
 
 exports.createPayment = async (req, res, next) => {
     try {
@@ -20,8 +19,8 @@ exports.createPayment = async (req, res, next) => {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": `${config.HOST}/api/v1/transactions/payment/execute`,
-                "cancel_url": `${config.PORT}/api/v1/transactions/payment/cancel`
+                "return_url": `https://quickpay-api.herokuapp.com/api/v1/transactions/payment/execute`,
+                "cancel_url": `https://quickpay-api.herokuapp.com/api/v1/transactions/payment/cancel`
             },
             "transactions": [{
                 "amount": {
