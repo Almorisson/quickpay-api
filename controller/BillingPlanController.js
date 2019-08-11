@@ -24,10 +24,10 @@ exports.createBillingPlan = async (req, res, next) => {
             "description": "Abonnement d'un commerçant",
             "merchant_preferences": {
                 "auto_bill_amount": "yes",
-                "cancel_url": "https://quickpay-api.herokuapp.com/billing-plans/subscription",
+                "cancel_url": "https://quickpay-api.herokuapp.com/api/v1/billing-plans/subscription",
                 "initial_fail_amount_action": "continue",
                 "max_fail_attempts": "1",
-                "return_url": "https://quickpay-api.herokuapp.com/billing-plans/subscription/execute"
+                "return_url": "https://quickpay-api.herokuapp.com/billing-plans/api/v1/subscription/execute"
             },
             "name": "Abonnement d'un commerçant",
             "payment_definitions": [
