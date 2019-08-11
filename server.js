@@ -11,6 +11,7 @@ const { unAuthorizedError, errors } = require('./middlewares/errorHandler')
 const customerRoutes = require('./routes/customerRoutes');
 const traderRoutes = require('./routes/traderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes')
+const billingPlanRoutes = require('./routes/billingPlanRoutes')
 const passportJWT = require('./middlewares/passportJWT')();
 const app = express();
 //Dotenv Config
@@ -39,8 +40,9 @@ app.use('uploads', express.static('uploads'));
 app.use(passportJWT.initialize())
 
 app.use('/api/v1/customers', customerRoutes);
-app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1/traders', traderRoutes);
+app.use('/api/v1/payments', paymentRoutes);
+app.use('/api/v1/billing-plans', billingPlanRoutes);
 
 //app.use(unAuthorizedError)
 app.use(errors)

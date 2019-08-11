@@ -71,7 +71,7 @@ exports.executePayment = async (req, res, next) => {
 
             const paymentId = req.query.paymentId;
 
-            await paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+            await paypal.payment.execute(paymentId, execute_payment_json, async function (error, payment) {
                 if (error) {
                     console.log(error.response);
                     throw error;
@@ -97,7 +97,7 @@ exports.executePayment = async (req, res, next) => {
                     pay.customer = Customer.findOne({email: pay.customerEmail}).select("_id")
                     pay.trader = Trader.findOne({email: pay.traderEmail}).select("_id")
                     // Save payment in the database
-                    pay.save(err => {
+                    await pay.save(err => {
                         if(err) {
                             let error = new Error("Wrong Request ! You don't have permissions to update profile Trader.");
                             error.statusCode = 400;
