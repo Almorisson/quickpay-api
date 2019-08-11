@@ -23,8 +23,8 @@ exports.createPayment = async (req, res, next) => {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": `https://quickpay-api.herokuapp.com/api/v1/transactions/payment/execute`,
-                "cancel_url": `https://quickpay-api.herokuapp.com/api/v1/transactions/payment/cancel`
+                "return_url": `https://quickpay-api.herokuapp.com/api/v1/payments/payment/execute`,
+                "cancel_url": `https://quickpay-api.herokuapp.com/api/v1/payments/payment/cancel`
             },
             "transactions": [{
                 "amount": {
