@@ -1,4 +1,5 @@
 module.exports = {
+    HOST: process.env.HOST,
     PORT: process.env.PORT,
     MONGO_URI_ATLAS: process.env.MONGO_URI_ATLAS,
     PRIVATE_KEY: process.env.PRIVATE_KEY,
