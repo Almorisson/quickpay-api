@@ -8,7 +8,11 @@
 
 const paypal = require('../config/paypal')
 const validationHandler = require('../validations/validationHandler')
+const Payment = require('../models/payments')
+const Trader = require('../models/traders')
+const Customer = require('../models/customers')
 
+// createPayment controller
 exports.createPayment = async (req, res, next) => {
     try {
         validationHandler(req)
@@ -50,6 +54,60 @@ exports.createPayment = async (req, res, next) => {
                 console.log(payment);
             }
         });
+    } catch (error) {
+        next(error)
+    }
+}
+
+// executePayment controller
+exports.executePayment = async (req, res, next) => {
+    try {
+        validationHandler(req)
+        // ExÃ©cution du paiement
+        if(req.query && req.query.paymentId && req.query.PayerID) {
+            const execute_payment_json = {
+                "payer_id": req.query.PayerID
+            };
+
+            const paymentId = req.query.paymentId;
+
+            await paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+                if (error) {
+                    console.log(error.response);
+                    throw error;
+                } else {
+                    console.log("Get Payment Response");
+                    console.log(JSON.stringify(payment));
+                    // Opérations effectuées dans la BDD
+                    const pay = new Payment();
+                    pay.paymentId = paymentId
+                    pay.payerId = req.query.PayerID
+                    pay.state = payment.state
+                    pay.amount = payment.transactions[0].amount.total
+                    pay.merchantId = payment.transactions[0].payee.merchant_id
+                    pay.traderStoreName = payment.payer.payer_info.business_name
+                    pay.traderEmail = payment.transactions[0].payee.email
+                    pay.customerEmail = payment.payer.payer_info.email
+                    pay.shippingAddress.recipientName = payment.payer.payer_info.shipping_address.recipient_name
+                    pay.shippingAddress.address = payment.payer.payer_info.shipping_address.line1
+                    pay.shippingAddress.country = payment.payer.payer_info.shipping_address.country
+                    pay.shippingAddress.city = payment.payer.payer_info.shipping_address.city
+                    pay.shippingAddress.postalCode = payment.payer.payer_info.shipping_address.postal_code
+                    pay.shippingAddress.codeCountry = payment.payer.payer_info.shipping_address.code_country
+                    pay.customer = Customer.findOne({email: pay.customerEmail})
+                    pay.trader = Trader.findOne({email: pay.traderEmail})
+                    // Save payment in the database
+                    pay.save((err, paymentSaved) => {
+                        if(err) {
+                            return res.status(400).json({
+                                error: "Something went wrong when trying to save transaction to the database."
+                            })
+                        }
+                        return res.send({pay: paymentSaved})
+                    })
+                }
+            });
+        }
     } catch (error) {
         next(error)
     }

@@ -5,11 +5,9 @@
  */
 
 const expressJwt = require('express-jwt')
-const dotenv = require('dotenv')
-
-dotenv.config()
+const config = require('../config')
 
 exports.authenticate = expressJwt({
-    secret: process.env.JWT_SECRET_KEY,
+    secret: config.JWT_SECRET_KEY,
     userProperty: "auth"
 });

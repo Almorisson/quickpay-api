@@ -14,6 +14,8 @@ const validationHandler = require('../validations/validationHandler')
 //const config = require('../config')
 const capitalize = require('../helpers')
 const _ = require('lodash')
+const formidable = require('formidable')
+const fs = require('fs')
 
 let mongoose = require('mongoose');
 
