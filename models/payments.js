@@ -24,8 +24,8 @@ const PaymentSchema = mongoose.Schema({
     siretNumber: {type: String, required: true, unique: true, min: 10, max: 30},
     iban: {type: String, required: true, max: 34, unique: true},
     created_at: {type: Date, required: true, default: Date.now()},
-    trader: {type: Schema.Types.ObjectId, ref: "trader"},
-    customer: {type: Schema.Types.ObjectId, ref: "customer"},
+    //trader: {type: Schema.Types.ObjectId, ref: "trader"},
+    //customer: {type: Schema.Types.ObjectId, ref: "customer"},
 
 }, {versionKey: false // You should be aware of the outcome after set to false
 })
