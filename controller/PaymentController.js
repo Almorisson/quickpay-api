@@ -9,8 +9,8 @@
 const paypal = require('../config/paypal')
 const validationHandler = require('../validations/validationHandler')
 const config = require('../config')
-const PORT = config.PORT
-const HOST = config.HOST
+const PORT = config.PORT || 8000
+const HOST = config.HOST || 'https://quickpay-api.herokuapp.com'
 
 exports.createPayment = async (req, res, next) => {
     try {
