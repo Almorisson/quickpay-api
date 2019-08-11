@@ -389,7 +389,7 @@ exports.update = async (req, res, next) => {
         validationHandler(req)
 
         let form = new formidable.IncomingForm();
-        // console.log("incoming form data: ", form);
+        console.log("incoming form data: ", form);
         form.keepExtensions = true;
         form.parse(req, (err, fields, files) => {
             if (err) {
@@ -400,7 +400,7 @@ exports.update = async (req, res, next) => {
 
 
             let customer = req.profile
-            customer = _.extend(customer,  req.body) // change les champs renseignés dans le body de la requête
+            customer = _.extend(customer,  fields) // change les champs renseignés dans le body de la requête
             customer.updated_at = Date.now()
 
             customer.country = capitalize(req.body.country)
@@ -417,7 +417,7 @@ exports.update = async (req, res, next) => {
                     error.statusCode = 400;
                     throw error;
                 }
-                //return res.status(400).json(err)
+                return res.status(400).json(err)
             })
 
         return res.send({customer});
