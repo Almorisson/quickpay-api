@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const validator = require("email-validator")
 const mongoose = require('mongoose')
 
-const traderSchema = mongoose.Schema({
+const TraderSchema = mongoose.Schema({
     firstName: {type: String, required:true, capitalize: true, minLength: 2, maxLength: 100},
     lastName: {type: String, required:true, uppercase: true, minLength: 2 ,maxLength: 50},
     nameSociety: {type: String, required: true},
@@ -28,24 +28,24 @@ const traderSchema = mongoose.Schema({
 })
 
 // Ancienne version des methods de validation
-traderSchema.methods.comparePassword = function(password) {
+TraderSchema.methods.comparePassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 };
 
-traderSchema.methods.validateEmail = function(email) {
+TraderSchema.methods.validateEmail = function(email) {
     return validator.validate(email);
 }
 
-// Nouvelle methodes de validation : Modification probable des methodes applicables ce model
-traderSchema.methods.encryptPassword = async password => {
+// Nouvelle methodes de validation
+TraderSchema.methods.encryptPassword = async password => {
     const salt = await bcrypt.genSalt(5)
     const hash = await bcrypt.hash(password, salt)
     return hash;
 };
 
-traderSchema.methods.validPassword = async function(candidatePassword) {
+TraderSchema.methods.validPassword = async function(candidatePassword) {
     const result = bcrypt.compare(candidatePassword, this.password)
     return result;
 };
 
-module.exports = mongoose.model('Trader', traderSchema);
+module.exports = mongoose.model('Trader', TraderSchema);
