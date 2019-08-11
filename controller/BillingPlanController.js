@@ -7,18 +7,17 @@
 
 const paypal = require('../config/paypal')
 const validationHandler = require('../validations/validationHandler')
-const BillingPlan = require('../models/billings')
-const Trader = require('../models/traders')
-const Customer = require('../models/customers')
+//const BillingPlan = require('../models/billings')
+//const Trader = require('../models/traders')
+//const Customer = require('../models/customers')
 
 // createBillingPlan controller
 exports.createBillingPlan = async (req, res, next) => {
     try {
-
         validationHandler(req)
 
         var isoDate = new Date();
-        isoDate.setSeconds(isoDate.getSeconds() + 14)
+        isoDate.setSeconds(isoDate.getSeconds() + 30)
         isoDate.toISOString().slice(0, 19) + 'Z';
 
         var billingPlanAttributes = {
@@ -69,7 +68,7 @@ exports.createBillingPlan = async (req, res, next) => {
             }
         };
         // Create the billing plan
-        paypal.billingPlan.create(billingPlanAttributes, function (error, billingPlan) {
+        await paypal.billingPlan.create(billingPlanAttributes, async function (error, billingPlan) {
             if (error) {
                 console.log(error);
                 throw error;
@@ -78,7 +77,7 @@ exports.createBillingPlan = async (req, res, next) => {
                 console.log(billingPlan);
 
                 // Activate the plan by changing status to Active
-                paypal.billingPlan.update(billingPlan.id, billingPlanUpdateAttributes, function (error, response) {
+                await paypal.billingPlan.update(billingPlan.id, billingPlanUpdateAttributes, async function (error, response) {
                     if (error) {
                         console.log(error);
                         throw error;
@@ -87,7 +86,7 @@ exports.createBillingPlan = async (req, res, next) => {
                         billingAgreementAttributes.plan.id = billingPlan.id;
 
                         // Use activated billing plan to create agreement
-                        paypal.billingAgreement.create(billingAgreementAttributes, function (error, billingAgreement) {
+                        await paypal.billingAgreement.create(billingAgreementAttributes, function (error, billingAgreement) {
                             if (error) {
                                 console.log(error);
                                 throw error;
