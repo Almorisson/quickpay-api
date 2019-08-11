@@ -94,8 +94,8 @@ exports.executePayment = async (req, res, next) => {
                     pay.shippingAddress.city = payment.payer.payer_info.shipping_address.city
                     pay.shippingAddress.postalCode = payment.payer.payer_info.shipping_address.postal_code
                     pay.shippingAddress.codeCountry = payment.payer.payer_info.shipping_address.code_country
-                    pay.customer = Customer.findOne({email: pay.customerEmail})
-                    pay.trader = Trader.findOne({email: pay.traderEmail})
+                    pay.customer = Customer.findOne({email: pay.customerEmail}).select("_id")
+                    pay.trader = Trader.findOne({email: pay.traderEmail}).select("_id")
                     // Save payment in the database
                     pay.save(err => {
                         if(err) {
@@ -103,12 +103,10 @@ exports.executePayment = async (req, res, next) => {
                             error.statusCode = 400;
                             throw error;
                         }
-                        return res.json({
-                            error: "Something went wrong while trying to save transaction."
-                        });
+                        return res.status(400).json(err)
                     });
 
-                    return res.send({pay})
+                    return res.send({payment: pay})
                 }
             });
         }
