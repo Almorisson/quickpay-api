@@ -97,14 +97,18 @@ exports.executePayment = async (req, res, next) => {
                     pay.customer = Customer.findOne({email: pay.customerEmail})
                     pay.trader = Trader.findOne({email: pay.traderEmail})
                     // Save payment in the database
-                    pay.save((err, paymentSaved) => {
+                    pay.save(err => {
                         if(err) {
-                            return res.status(400).json({
-                                error: "Something went wrong when trying to save transaction to the database."
-                            })
+                            let error = new Error("Wrong Request ! You don't have permissions to update profile Trader.");
+                            error.statusCode = 400;
+                            throw error;
                         }
-                        return res.send({pay: paymentSaved})
-                    })
+                        return res.json({
+                            error: "Something went wrong while trying to save transaction."
+                        });
+                    });
+
+                    return res.send({pay})
                 }
             });
         }
