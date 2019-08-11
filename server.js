@@ -13,10 +13,6 @@ const traderRoutes = require('./routes/traderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes')
 const passportJWT = require('./middlewares/passportJWT')();
 const app = express();
-// ENV Constants Variables
-const HOST = config.HOST;
-const PORT = config.PORT;
-
 //Dotenv Config
 //dotenv.config()
 
@@ -49,7 +45,7 @@ app.use('/api/v1/traders', traderRoutes);
 //app.use(unAuthorizedError)
 app.use(errors)
 
-app.listen(PORT, HOST, function(){
-    console.log(`Server is listening on http://${HOST}:${PORT}`);
+app.listen(config.PORT, config.HOST, function(){
+    console.log(`Server is listening on http://${config.HOST}:${config.PORT}`);
 });
 
