@@ -8,6 +8,9 @@
 
 const paypal = require('../config/paypal')
 const validationHandler = require('../validations/validationHandler')
+const config = require('../config')
+const PORT = config.PORT
+const HOST = config.HOST
 
 exports.createPayment = async (req, res, next) => {
     try {
@@ -19,8 +22,8 @@ exports.createPayment = async (req, res, next) => {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost.com:3000/api/v1/transactions/payment/execute",
-                "cancel_url": "http://localhost.com:3000/api/v1/transactions/payment/cancel"
+                "return_url": `${HOST}/api/v1/transactions/payment/execute`,
+                "cancel_url": `${PORT}/api/v1/transactions/payment/cancel`
             },
             "transactions": [{
                 "amount": {
