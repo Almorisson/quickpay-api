@@ -1,9 +1,10 @@
 module.exports = {
-    PORT: process.env.PORT ||Â 8080,
+    PORT: process.env.PORT || 8080,
     MONGO_URI_ATLAS: process.env.MONGO_URI_ATLAS,
     PRIVATE_KEY: process.env.PRIVATE_KEY,
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
     PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
     PAYPAL_CLIENT_SECRET: process.env.PAYPAL_CLIENT_SECRET,
-    PAYPAL_MODE: process.env.PAYPAL_MODE
+    PAYPAL_MODE: process.env.PAYPAL_MODE,
+    API_PRIVATE_KEY: process.env.API_PRIVATE_KEY
 }
