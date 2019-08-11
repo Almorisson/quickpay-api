@@ -1,5 +1,5 @@
 module.exports = {
-    PORT: process.env.PORT || 8080,
+    PORT: process.env.PORT,
     MONGO_URI_ATLAS: process.env.MONGO_URI_ATLAS,
     PRIVATE_KEY: process.env.PRIVATE_KEY,
     JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
