@@ -1,6 +1,11 @@
 {
   "name": "api",
   "version": "0.0.0",
+  "description": "The API of the QuickPay project",
+  "engines": {
+      "node": "v11.10.0",
+      "npm": "6.10.2"
+  },
   "private": true,
   "scripts": {
     "start": "node server.js",
