@@ -94,8 +94,13 @@ exports.executePayment = async (req, res, next) => {
                     pay.shippingAddress.city = payment.payer.payer_info.shipping_address.city
                     pay.shippingAddress.postalCode = payment.payer.payer_info.shipping_address.postal_code
                     pay.shippingAddress.codeCountry = payment.payer.payer_info.shipping_address.code_country
-                    pay.customer = Customer.findOne({email: pay.customerEmail}).select("_id")
-                    pay.trader = Trader.findOne({email: pay.traderEmail}).select("_id")
+                    pay.customer = Customer.findOne({email: pay.customerEmail})
+                                            .select("_id")
+                                            .populate("trader")
+                    pay.trader = Trader.findOne({email: pay.traderEmail})
+                                        .select("_id")
+                                        .populate("trader")
+
                     // Save payment in the database
                     await pay.save(err => {
                         if(err) {
