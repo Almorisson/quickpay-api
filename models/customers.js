@@ -15,7 +15,7 @@ const CustomerSchema = mongoose.Schema({
     },
     created_at: {type: Date, required: true, default: Date.now},
     updated_at: {type: Date},
-    phoneNumber: {type: String, required: true, unique: true, minLength: 12, maxLength: 16},
+    phoneNumber: {type: String, required: false, unique: true, minLength: 12, maxLength: 16},
     address: {type: String, required: true, unique: true, minLength: 10, maxLength: 200},
     country: {type: String, required: true, default: "France", minLength: 5, maxLength: 100},
     postalCode: {type: String, required: true, min: 5, max: 5},
@@ -30,7 +30,7 @@ const CustomerSchema = mongoose.Schema({
 }, {versionKey: false // You should be aware of the outcome after set to false
 })
 
-// Ancienne version des methods de validation   
+// Ancienne version des methods de validation
 CustomerSchema.methods.comparePassword = function(pass) {
     return bcrypt.compareSync(pass, this.password);
 };
