@@ -289,7 +289,9 @@ exports.register = async (req, res, next) => {
         customer.lastName = req.body.lastName.toUpperCase()
         customer.email = req.body.email
         customer.password = await customer.encryptPassword(req.body.password)
-        customer.phoneNumber = req.body.phoneNumber
+        if ((req.body.phoneNumber).length > 16 && (req.body.phoneNumber).length < 12) {
+            customer.phoneNumber = req.body.phoneNumber
+        }
         customer.city = req.body.city
         customer.postalCode = req.body.postalCode
         customer.address = req.body.address

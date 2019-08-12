@@ -30,7 +30,7 @@ const CustomerSchema = mongoose.Schema({
 }, {versionKey: false // You should be aware of the outcome after set to false
 })
 
-// Ancienne version des methods de validation
+// Ancienne version des methods de validation   
 CustomerSchema.methods.comparePassword = function(pass) {
     return bcrypt.compareSync(pass, this.password);
 };
