@@ -11,7 +11,8 @@ const TraderSchema = mongoose.Schema({
     password: {type: String, required: true, select: false},
     picture: {
         data: Buffer,
-        type: String
+        type: String,
+        default: "http://via.placeholder.com/100X100"
     },
     created_at: {type: Date, required: true, default: Date.now()},
     updated_at: {type: Date},
@@ -23,7 +24,11 @@ const TraderSchema = mongoose.Schema({
     postalCode: {type: String, required: true, min: 5, max: 5},
     city: {type: String, required: true, minLength: 5, maxLength: 255},
     siretNumber: {type: String, required: true, unique: true, min: 10, max: 30},
-    iban: {type: String, required: true, max: 34, unique: true}
+    iban: {type: String, required: true, max: 34, unique: true},
+    resetPasswordLink: {
+        data: String,
+        default: ""
+    }
 }, {versionKey: false // You should be aware of the outcome after set to false
 })
 

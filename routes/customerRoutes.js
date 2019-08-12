@@ -5,8 +5,13 @@ const {
         findCustomerById, profile,
         allCustomers, getCustomerById,
         unregister, update, addPhoto,
-        customerPhoto
+        customerPhoto,forgotPassword,
+        resetPassword
         } = require('../controller/CustomerController');
+const { sendEmail } = require("../helpers/authHelpers");
+
+// import password reset validator
+const { userSignupValidator, passwordResetValidator } = require("../validations/validators");
 
 const multer = require('multer');
 
@@ -50,6 +55,13 @@ router.delete('/:customerId', authenticate, unregister);
 router.put('/:customerId', authenticate, update);
 router.post("/profile/photo", upload.single("image"), addPhoto);
 router.put("/profile/photo", customerPhoto);
+
+// password forgot and reset routes
+router.put("/forgot-password", forgotPassword);
+router.put("/reset-password", passwordResetValidator, resetPassword);
+
+
+
 // router.put('/users', CustomerController.updateProfile);
 // router.put('/password', CustomerController.updatePassword);
 // router.delete('/users/', CustomerController.delete);

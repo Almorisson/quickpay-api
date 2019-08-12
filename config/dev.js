@@ -6,5 +6,6 @@ module.exports = {
     JWT_SECRET_KEY: 'aqdrtyupgjjfse4567898673bgjgttyrzg',
     PAYPAL_CLIENT_ID: 'AR-C8Ba_obO61ewsaRa_WAkV0mSotQ-EmwK0sykQzhmmbf-R3UkCqf98se0PQLXaOZQeqLEZRdPIa3Hr',
     PAYPAL_CLIENT_SECRET: 'EPDULuoUcSuVxASXwfndysbxNfXZyZl5W8zeZfEkZn3psfwOOxpwPOatYDiRq74ey1-Al-SnsQ-MAb_E',
-    PAYPAL_MODE: 'sandbox'
+    PAYPAL_MODE: 'sandbox',
+    CLIENT_URL: 'https://qickpay.herokuapp.com/'
 }

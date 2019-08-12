@@ -5,17 +5,14 @@
  * @copyright : 2019 - 2020 All rights reserved
  */
 
-const Trader = require('../models/traders')
-const jwt = require('jsonwebtoken')
-const jwt_decode = require('jwt-decode');
-const validationHandler = require('../validations/validationHandler')
-//const jwt = require('jwt-simple')
-const capitalize = require('../helpers')
-const _ = require('lodash')
-const dotenv = require('dotenv')
+const
+    Trader          = require('../models/traders')
+    jwt             = require('jsonwebtoken'),
+    jwt_decode      = require('jwt-decode'),
+    { capitalize }  = require('../helpers'),
+    _               = require('lodash') // convention de nommage pour stocker l'objet {lodash}
+    config          = require('../config')
 
-// Load ENV Variables
-dotenv.config()
 
 // module.exports = {
 //     registerTrader: async function(req, res) {
@@ -150,7 +147,7 @@ exports.register = async (req, res, next) => {
 
         trader = await trader.save();
 
-        const token = jwt.sign({id: trader.id}, process.env.JWT_SECRET_KEY)
+        const token = jwt.sign({id: trader.id}, config.JWT_SECRET_KEY)
         return res.send({trader, token})
 
     } catch (err) {
@@ -179,7 +176,7 @@ exports.login = async (req, res, next) => {
             throw error;
         }
 
-        const token = jwt.sign({id: trader.id}, process.env.JWT_SECRET_KEY)
+        const token = jwt.sign({id: trader.id}, config.JWT_SECRET_KEY)
         res.cookie("tok", token, {expire: new Date() + 99999})
 
         return res.send({trader, token})
@@ -343,7 +340,6 @@ exports.allTraders =  async (req, res, next) => {
         })
         .skip((page - 1) * pagination)
         .limit(pagination)
-        //.populate("customer").sort({ createdAt: -1})
         .select('email firstName lastName nameSociety iban phoneNumber')
 
         return res.json({
