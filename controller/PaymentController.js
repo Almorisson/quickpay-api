@@ -79,7 +79,7 @@ exports.executePayment = async (req, res, next) => {
                     console.log("Get Payment Response");
                     console.log(JSON.stringify(payment));
                     // Opérations effectuées dans la BDD
-                    const pay = new Payment();
+                    const pay = await new Payment();
                     pay.paymentId = paymentId
                     pay.payerId = req.query.PayerID
                     pay.state = payment.state
@@ -94,10 +94,10 @@ exports.executePayment = async (req, res, next) => {
                     pay.shippingAddress.city = payment.payer.payer_info.shipping_address.city
                     pay.shippingAddress.postalCode = payment.payer.payer_info.shipping_address.postal_code
                     pay.shippingAddress.codeCountry = payment.payer.payer_info.shipping_address.code_country
-                    pay.customer = Customer.findOne({email: pay.customerEmail})
+                    pay.customer = await Customer.findOne({email: pay.customerEmail})
                                             .select("_id")
                                             .populate("trader")
-                    pay.trader = Trader.findOne({email: pay.traderEmail})
+                    pay.trader = await Trader.findOne({email: pay.traderEmail})
                                         .select("_id")
                                         .populate("trader")
 
