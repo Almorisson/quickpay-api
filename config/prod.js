@@ -6,5 +6,6 @@ module.exports = {
     PAYPAL_CLIENT_ID: process.env.PAYPAL_CLIENT_ID,
     PAYPAL_CLIENT_SECRET: process.env.PAYPAL_CLIENT_SECRET,
     PAYPAL_MODE: process.env.PAYPAL_MODE,
-    API_PRIVATE_KEY: process.env.API_PRIVATE_KEY
+    API_PRIVATE_KEY: process.env.API_PRIVATE_KEY,
+    CLIENT_URL: process.env.CLIENT_URL
 }

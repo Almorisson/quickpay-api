@@ -10,7 +10,8 @@ const CustomerSchema = mongoose.Schema({
     accountType: {type: String, required: false, default: "customer"},
     picture: {
         data: Buffer,
-        type: String
+        type: String,
+        default: "http://via.placeholder.com/100X100"
     },
     created_at: {type: Date, required: true, default: Date.now},
     updated_at: {type: Date},
@@ -18,7 +19,11 @@ const CustomerSchema = mongoose.Schema({
     country: {type: String, required: true, default: "France"},
     codeCountry: {type: String, required: true, default: "FR"},
     birthDay: {type: Date, required: false},
-    creditCard: {type: String, required: false, min: 16, max: 20,unique: true, index: true}
+    creditCard: {type: String, required: false, min: 16, max: 20,unique: true, index: true},
+    resetPasswordLink: {
+        data: String,
+        default: ""
+    }
 }, {versionKey: false // You should be aware of the outcome after set to false
 })
 

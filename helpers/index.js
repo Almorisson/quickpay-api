@@ -7,9 +7,31 @@
  */
 
 // Mettre la première lettre d'une chaîne de caractères en Majuscule
-const capitalize = (s) => {
+exports.capitalize = (s) => {
   if (typeof s !== 'string') return ''
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
-module.exports = capitalize;
+// sendEmail methode: Permet d'envoyer des mails sécurisé avec le protocole smtp
+const nodeMailer = require("nodemailer");
+const defaultEmailData = { from: "noreply@node-react.com" };
+
+exports.sendEmail = emailData => {
+    const transporter = nodeMailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+            user: "quickpay.pli@gmail.com",
+            pass: "myPassword"
+        }
+    });
+    return (
+        transporter
+            .sendMail(emailData)
+            .then(info => console.log(`Message sent: ${info.response}`))
+            .catch(err => console.log(`Problem sending email: ${err}`))
+    );
+};
+
