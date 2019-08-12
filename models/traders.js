@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const validator = require("email-validator")
 const mongoose = require('mongoose')
+const { objectId } = mongoose.Schema
 
 const TraderSchema = mongoose.Schema({
     firstName: {type: String, required:true, capitalize: true, minLength: 2, maxLength: 100},
