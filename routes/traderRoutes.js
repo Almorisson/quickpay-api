@@ -18,7 +18,7 @@ router.get('/logout', authenticate, logout);
 router.get('/:traderId', authenticate, getTraderById);
 router.delete('/:traderId', authenticate, unregister);
 router.put('/:traderId', authenticate, update);
-router.get('/', authenticate, allTraders);
+router.get('/', allTraders);
 
 router.param("traderId", findTraderById) // any route with :traderId will execute this findTraderById() first
 
