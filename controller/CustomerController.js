@@ -14,8 +14,6 @@ const
     formidable          = require('formidable'),
     fs                  = require('fs')
     config              = require('../config/index')
-//const jwt_simple = require('simple-jwt')
-//const config = require('../config')
 
 // module.exports = {
 //     register: async function(req, res){
@@ -267,7 +265,9 @@ const
 // }
 
 /**
- * Nouvelle Version des controllers du fichier CustomerController
+ *
+ * Nouvelle Version des controllers du controller CustomerController
+ *
  */
 
 // register controller
@@ -290,7 +290,9 @@ exports.register = async (req, res, next) => {
         customer.email = req.body.email
         customer.password = await customer.encryptPassword(req.body.password)
         customer.phoneNumber = req.body.phoneNumber
-        customer.country = req.body.country
+        customer.city = req.body.city
+        customer.postalCode = req.body.postalCode
+        customer.address = req.body.address
 
         if(req.body.country && req.body.country !== "") {
             customer.country = capitalize(req.body.country)

@@ -15,11 +15,14 @@ const CustomerSchema = mongoose.Schema({
     },
     created_at: {type: Date, required: true, default: Date.now},
     updated_at: {type: Date},
-    phoneNumber: {type: String, required: true, unique: true},
-    country: {type: String, required: true, default: "France"},
+    phoneNumber: {type: String, required: true, unique: true, minLength: 12, maxLength: 16},
+    address: {type: String, required: true, unique: true, minLength: 10, maxLength: 200},
+    country: {type: String, required: true, default: "France", minLength: 5, maxLength: 100},
+    postalCode: {type: String, required: true, min: 5, max: 5},
+    city: {type: String, required: true, minLength: 3, maxLength: 50},
     codeCountry: {type: String, required: true, default: "FR"},
     birthDay: {type: Date, required: false},
-    creditCard: {type: String, required: false, min: 16, max: 20,unique: true, index: true},
+    creditCard: {type: String, required: false, min: 16, max: 20, unique: true, index: true},
     resetPasswordLink: {
         data: String,
         default: ""

@@ -94,12 +94,35 @@ exports.executePayment = async (req, res, next) => {
                     pay.shippingAddress.city = payment.payer.payer_info.shipping_address.city
                     pay.shippingAddress.postalCode = payment.payer.payer_info.shipping_address.postal_code
                     pay.shippingAddress.codeCountry = payment.payer.payer_info.shipping_address.code_country
-                    pay.customer = await Customer.findOne({email: pay.customerEmail})
-                                            .select("_id")
-                                            .populate("trader")
                     pay.trader = await Trader.findOne({email: pay.traderEmail})
-                                        .select("_id")
-                                        .populate("trader")
+                                            .populate("trader",
+                                                    '_id email firstName lastName iban siretNumber\
+                                                    nameSociety phoneNumber address postalCode city country'
+                                             )
+                                            .select("_id firstName lastName email iban nameSociety\
+                                                    phoneNumber nameSociety phoneNumber address postalCode city country"
+                                            )
+                                            .exec((err, res) => {
+                                                if(err) {
+                                                    return res.status.json({
+                                                        error: "An error was occured while trying to save transactions in the database."
+                                                    })
+                                                }
+                                            })
+                    pay.Customer = await Customer.findOne({email: pay.customerEmail})
+                                        .populate("trader",
+                                             '_id email firstName lastName creditCard\
+                                              phoneNumber address postalCode city country'
+                                        )
+                                        .select("_id firstName lastName email\
+                                                phoneNumber nameSociety phoneNumber address postalCode city country"
+                                        ).exec((err, res) => {
+                                                if(err) {
+                                                    return res.status.json({
+                                                        error: "An error was occured while trying to save transactions in the database."
+                                                    })
+                                                }
+                                        })
 
                     // Save payment in the database
                     await pay.save(err => {

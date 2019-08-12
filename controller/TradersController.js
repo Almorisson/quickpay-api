@@ -6,13 +6,13 @@
  */
 
 const
-    Trader          = require('../models/traders')
-    jwt             = require('jsonwebtoken'),
-    jwt_decode      = require('jwt-decode'),
-    { capitalize }  = require('../helpers'),
-    _               = require('lodash') // convention de nommage pour stocker l'objet {lodash}
-    config          = require('../config')
-
+    Trader              = require('../models/traders')
+    jwt                 = require('jsonwebtoken'),
+    jwt_decode          = require('jwt-decode'),
+    { capitalize }      = require('../helpers'),
+    _                   = require('lodash') // convention de nommage pour stocker l'objet {lodash}
+    config              = require('../config')
+    validationHandler   = require('../validations/validationHandler')
 
 // module.exports = {
 //     registerTrader: async function(req, res) {
