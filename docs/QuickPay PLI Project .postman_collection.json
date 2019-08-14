@@ -1,0 +1,879 @@
+{
+	"info": {
+		"_postman_id": "0896b1f0-e58d-40b6-8da7-b1f11fc37f70",
+		"name": "QuickPay PLI Project ",
+		"description": "API tests for the QuickPay PLI Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Customers",
+			"item": [
+				{
+					"name": "GET All Customers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNDk2OTZiOTQwMDc4ZjQwNzc1ZTZjMCIsImlhdCI6MTU2NTIwMzc3MH0.EchkcPDMP-58D5sWYQSfxHks5zo7mVnR6E5PL8eG1EQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://quickpay-api.herokuapp.com/api/v1/customers/",
+							"protocol": "https",
+							"host": [
+								"quickpay-api",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								""
+							]
+						},
+						"description": "Get a collection of customerers users."
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"firstName\": \"customer8\",\n        \"lastName\": \"Quickpay\",\n        \"country\": \"France\",\t\n        \"email\": \"customer8@gmail.com\",\n        \"password\": \"myPassword\",\n        \"phoneNumber\": \"31687885654345678095742\",\n        \"address\": \"16 avenue de  Sicap mbao\",\n        \"postalCode\": \"99999\",\n        \"city\": \"Paris\",\n        \"creditCard\": \"3496895000345688208\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/customers/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"ndionebaba@gmail.com\",\n    \"password\": \"myPassword\"\n}"
+						},
+						"url": {
+							"raw": "https://quickpay-api.herokuapp.com/api/v1/customers/login",
+							"protocol": "https",
+							"host": [
+								"quickpay-api",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/customers/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findCustomerById",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNGY1ZTZmYTk2ODFlMDAxN2QyOWU1ZCIsImlhdCI6MTU2NTQ5MzI5MH0.HZuXa4OTxoNWzWXdlco3WbgyuVMFRuNS_-RTP3Hy6to",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://quickpay-api.herokuapp.com/api/v1/customers/5d4f5e6fa9681e0017d29e5d",
+							"protocol": "https",
+							"host": [
+								"quickpay-api",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"5d4f5e6fa9681e0017d29e5d"
+							]
+						},
+						"description": "Trouver un client par son id"
+					},
+					"response": []
+				},
+				{
+					"name": "Unregister a customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNDk2OTZiOTQwMDc4ZjQwNzc1ZTZjMCIsImlhdCI6MTU2NTIwMzc3MH0.EchkcPDMP-58D5sWYQSfxHks5zo7mVnR6E5PL8eG1EQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://quickpay-api.herokuapp.com/api/v1/customers/5d49696b940078f40775e6c0",
+							"protocol": "https",
+							"host": [
+								"quickpay-api",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"5d49696b940078f40775e6c0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a single customer by its id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNGY1ZTZmYTk2ODFlMDAxN2QyOWU1ZCIsImlhdCI6MTU2NTQ5MzI5MH0.HZuXa4OTxoNWzWXdlco3WbgyuVMFRuNS_-RTP3Hy6to",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://quickpay-api.herokuapp.com/api/v1/customers/5d4f843a26e8bd0017632963",
+							"protocol": "https",
+							"host": [
+								"quickpay-api",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"5d4f843a26e8bd0017632963"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNGY1ZTZmYTk2ODFlMDAxN2QyOWU1ZCIsImlhdCI6MTU2NTQ5MzI5MH0.HZuXa4OTxoNWzWXdlco3WbgyuVMFRuNS_-RTP3Hy6to",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"country\": \"canada\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:300/api/v1/customers/5d4f5e6fa9681e0017d29e5d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "300",
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"5d4f5e6fa9681e0017d29e5d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add photo to profile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "/Users/morisson/Pictures/IMG0115A.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/customers/profile/photo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"profile",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Customer photo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNDk2OTZiOTQwMDc4ZjQwNzc1ZTZjMCIsImlhdCI6MTU2NTIwMzc3MH0.EchkcPDMP-58D5sWYQSfxHks5zo7mVnR6E5PL8eG1EQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "picture",
+									"type": "file",
+									"src": "/Users/morisson/Pictures/IMG0115A.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/customers/profile/photo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"profile",
+								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Paiement PAYPAL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Retrieving resources from API\n"
+		},
+		{
+			"name": "Traders",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"lucas@gmail.com\",\n    \"password\": \"myPassword\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/trader/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"trader",
+								"login"
+							]
+						},
+						"description": "Using Stripe to retrieve the amount send by the customer during the transaction "
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "picture",
+									"value": "trader0",
+									"type": "text"
+								},
+								{
+									"key": "firstName",
+									"value": "Quickpay",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "belgique",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "trader0@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "myPassword",
+									"type": "text"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "03486423986605",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "01 avenue des traders de l'ETN",
+									"type": "text"
+								},
+								{
+									"key": "postalCode",
+									"value": "94200",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "Ivry-Sur-Seine",
+									"type": "text"
+								},
+								{
+									"key": "siretNumber",
+									"value": "QP-PLI-etna-4675899",
+									"type": "text"
+								},
+								{
+									"key": "iban",
+									"value": "3450143456787894320008",
+									"type": "text"
+								},
+								{
+									"key": "qrCode",
+									"value": "somethning('(§tycgvjhb')",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/traders/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"traders",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findTraderById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNDUxYmVmM2ZlOTM5ODc4OGFmNWNmOCIsImlhdCI6MTU2NDkwNTk4Mn0.9UpDp3Jvg-tgewk184nKV256pm2KGWka6qsx0vK88Wo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://quickpay-api.herokuapp.com/api/v1/traders/5d4fab606978e60017d260f4",
+							"protocol": "https",
+							"host": [
+								"quickpay-api",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"traders",
+								"5d4fab606978e60017d260f4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/traders/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"traders",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of Traders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single Trader by its Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNDUxYmVmM2ZlOTM5ODc4OGFmNWNmOCIsImlhdCI6MTU2NDkwNTk4Mn0.9UpDp3Jvg-tgewk184nKV256pm2KGWka6qsx0vK88Wo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/traders/5d467d9f6f6c04ecc2256194",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"traders",
+								"5d467d9f6f6c04ecc2256194"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unregister a trader",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNDUxYmVmM2ZlOTM5ODc4OGFmNWNmOCIsImlhdCI6MTU2NDkwMjAyOH0.SWawyqqiaWaREtndKvSvmZdk94Dde8BXG2GjthqXvCo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/v1/traders/5d4529235cbbc87d4ebaa685",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"traders",
+								"5d4529235cbbc87d4ebaa685"
+							]
+						},
+						"description": "Delete the account entirely"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Trader",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVkNDUxYmVmM2ZlOTM5ODc4OGFmNWNmOCIsImlhdCI6MTU2NDkwNTk4Mn0.9UpDp3Jvg-tgewk184nKV256pm2KGWka6qsx0vK88Wo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountType\": \"trader\",\n    \"country\": \"Belgique\",\n    \"firstName\": \"Maxillian updated again\",\n    \"lastName\": \"FLAMMANTO\",\n    \"email\": \"machancen@gmail.com\",\n    \"phoneNumber\": \"0114846986605\",\n    \"siretNumber\": \"az-4587899\",\n    \"iban\": \"34843456787894320008\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/traders/5d467d9f6f6c04ecc2256194",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"traders",
+								"5d467d9f6f6c04ecc2256194"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Post data from API"
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Paypal access token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "ED4eXuKA6vCkz3QwLgvu1EhlAIG2crP9d4Ygu_Ysug4_VjcPfuNUUrMulpwbb-pE0am6yF4cedpM2Ra6",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "ASRaLLMCiNqperjAJoEjtjp39_zpRqOKBJ4psZ8vFyod-9OydCcdalyfNA-b09kcrw4qtwXNFsGbIPCX",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.sandbox.paypal.com/v1/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"api",
+								"sandbox",
+								"paypal",
+								"com"
+							],
+							"path": [
+								"v1",
+								"oauth2",
+								"token"
+							]
+						},
+						"description": "Créer et exécuter un paiment paypal"
+					},
+					"response": []
+				},
+				{
+					"name": "Create payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "A21AAGcQ6mXlIbu2pbGx0DMRIDoFtqNGnlbJZVm6wra0W84ZlWYdSd34JapFWw5lAoZXIZvTxGobs6UstJEFH3uQ2r8bmOt9w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://quickpay-api.herokuapp.com/api/v1/payments/payment",
+							"protocol": "https",
+							"host": [
+								"quickpay-api",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Execute payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "A21AAFrrIV8iR9E5-MszA_eKtLYHGEEv0cdrgutiq_7C8Q7m2Pokn77Mn_SN7IJimB-XwsavYFte9uGNFNZs9gGSF5Yh8fhxg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"payer_id\": \"2LKXYBRCYC9HS\"\n}"
+						},
+						"url": {
+							"raw": "https://api.sandbox.paypal.com/v1/payments/payment/PAYID-LVG7BDQ8FU39040277058608/execute",
+							"protocol": "https",
+							"host": [
+								"api",
+								"sandbox",
+								"paypal",
+								"com"
+							],
+							"path": [
+								"v1",
+								"payments",
+								"payment",
+								"PAYID-LVG7BDQ8FU39040277058608",
+								"execute"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
