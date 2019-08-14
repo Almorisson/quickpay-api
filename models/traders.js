@@ -12,8 +12,7 @@ const TraderSchema = mongoose.Schema({
     password: {type: String, required: true, select: false},
     picture: {
         data: Buffer,
-        type: String,
-        default: "http://via.placeholder.com/100X100"
+        contentType: String
     },
     created_at: {type: Date, required: true, default: Date.now()},
     updated_at: {type: Date},
@@ -28,6 +27,11 @@ const TraderSchema = mongoose.Schema({
     iban: {type: String, required: true, minLength: 20, maxLength: 34, unique: true},
     resetPasswordLink: {
         data: String,
+        default: ""
+    },
+    qrCode: {
+        data: Buffer,
+        contentType: String,
         default: ""
     }
 }, {versionKey: false // You should be aware of the outcome after set to false

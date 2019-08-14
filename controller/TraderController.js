@@ -13,6 +13,7 @@ const
     _                   = require('lodash') // convention de nommage pour stocker l'objet {lodash}
     config              = require('../config')
     validationHandler   = require('../validations/validationHandler')
+    formidable          = require('formidable')
 
 // module.exports = {
 //     registerTrader: async function(req, res) {
@@ -125,30 +126,53 @@ exports.register = async (req, res, next) => {
             throw error;
         }
 
-        let trader = await new Trader();
-        trader.firstName = capitalize(req.body.firstName)
-        trader.lastName = req.body.lastName.toUpperCase()
-        trader.email = req.body.email
-        trader.nameSociety = capitalize(req.body.nameSociety)
-        trader.password = await trader.encryptPassword(req.body.password)
-        trader.phoneNumber = req.body.phoneNumber,
-        //birthDay: req.body.birthDay,
-        trader.address = req.body.address,
-        trader.postalCode = req.body.postalCode,
-        trader.city = capitalize(req.body.city),
-        trader.siretNumber = req.body.siretNumber,
-        trader.iban = req.body.iban
+        let form = await new formidable.IncomingForm();
+        console.log("incoming form data: ", form);
+        form.keepExtensions = true;
 
-        if(req.body.country && req.body.country !== "") {
-            trader.country = capitalize(req.body.country)
-            let tempStr= req.body.country.substring(0, 2)
-            trader.codeCountry = tempStr.toUpperCase()
-        }
+        form.parse(req, async (err, fields, files) => {
+            if (err) {
+                return res.status(400).json({
+                    error: 'Photo could not be uploaded'
+                });
+            }
 
-        trader = await trader.save();
+            let trader = new Trader();
+            trader.firstName = capitalize(req.body.firstName)
+            trader.lastName = req.body.lastName.toUpperCase()
+            trader.email = req.body.email
+            trader.nameSociety = capitalize(req.body.nameSociety)
+            trader.password = await trader.encryptPassword(req.body.password)
+            trader.phoneNumber = req.body.phoneNumber,
+            //birthDay: req.body.birthDay,
+            trader.address = req.body.address,
+            trader.postalCode = req.body.postalCode,
+            trader.city = capitalize(req.body.city),
+            trader.siretNumber = req.body.siretNumber,
+            trader.iban = req.body.iban
 
-        const token = jwt.sign({id: trader.id}, config.JWT_SECRET_KEY)
-        return res.send({trader, token})
+            if(req.body.country && req.body.country !== "") {
+                trader.country = capitalize(req.body.country)
+                let tempStr= req.body.country.substring(0, 2)
+                trader.codeCountry = tempStr.toUpperCase()
+            }
+
+            if (files.picture) {
+                    customer.picture.data = fs.readFileSync(files.picture.path);
+                    customer.picture.contentType = files.picture.type;
+            }
+
+            if (req.body.qrCode != undefined) {
+                customer.qrCode.data = fs.writeSync([req.body.iban, req.body.siretNumber, req.body.email]); // Appeler la fonction générer QRcode
+                customer.qrCode.contentType = res.set("Content-Type", "png");
+            }
+            trader.qrcode = req.body.qrcode
+
+            trader = await trader.save();
+
+            const token = jwt.sign({id: trader.id}, config.JWT_SECRET_KEY)
+            return res.send({trader, token})
+        });
 
     } catch (err) {
         next(err)

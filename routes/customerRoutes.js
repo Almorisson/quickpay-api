@@ -5,7 +5,7 @@ const {
         findCustomerById, profile,
         allCustomers, getCustomerById,
         unregister, update, addPhoto,
-        customerPhoto,forgotPassword,
+        customerAddPhoto,forgotPassword,
         resetPassword
         } = require('../controller/CustomerController');
 const { sendEmail } = require("../helpers/authHelpers");
@@ -54,7 +54,7 @@ router.get('/:customerId', authenticate, getCustomerById);
 router.delete('/:customerId', authenticate, unregister);
 router.put('/:customerId', authenticate, update);
 router.post("/profile/photo", upload.single("image"), addPhoto);
-router.put("/profile/photo", customerPhoto);
+router.put("/profile/photo", customerAddPhoto); // Pour un update de profile
 
 // password forgot and reset routes
 router.put("/forgot-password", forgotPassword);

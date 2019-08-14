@@ -424,7 +424,7 @@ exports.update = async (req, res, next) => {
                 return res.status(400).json(err)
             })
 
-        return res.send({customer});
+        return res.send({customer});    
 
         });
 
@@ -528,7 +528,7 @@ exports.addPhoto = async function(req, res) {
 }
 
 // customerPhoto controller : Permet d'ajouter une photo lorsque le champ picture est renseigné
-exports.customerPhoto = (req, res, next) => {
+exports.customerAddPhoto = (req, res, next) => {
     if (req.profile.picture.data) {
         res.set(('Content-Type', req.profile.picture.contentType));
         return res.send(req.profile.picture.data);

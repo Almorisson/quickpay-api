@@ -10,8 +10,7 @@ const CustomerSchema = mongoose.Schema({
     accountType: {type: String, required: false, default: "customer"},
     picture: {
         data: Buffer,
-        type: String,
-        default: "http://via.placeholder.com/100X100"
+        contentType: String
     },
     created_at: {type: Date, required: true, default: Date.now},
     updated_at: {type: Date},
