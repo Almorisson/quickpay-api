@@ -10,11 +10,12 @@ const validationHandler = require('../validations/validationHandler')
 
 exports.generateQrCode = async(req, res, next) => {
     try {
+
         validationHandler(req)
         // Find trader infos to dump in the QRcode
         let trader = await Trader.findOne({_id: req.profile}).select("_id")
 
-
+        
         // Get the text to generate QR code
         //let qr_txt = req.body.qr_text;
         let qr_txt = req.body.amount

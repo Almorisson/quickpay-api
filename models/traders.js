@@ -31,8 +31,7 @@ const TraderSchema = mongoose.Schema({
     },
     qrCode: {
         data: Buffer,
-        contentType: String,
-        default: ""
+        contentType: String
     }
 }, {versionKey: false // You should be aware of the outcome after set to false
 })

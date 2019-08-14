@@ -424,7 +424,7 @@ exports.update = async (req, res, next) => {
                 return res.status(400).json(err)
             })
 
-        return res.send({customer});    
+        return res.send({customer});
 
         });
 
@@ -484,8 +484,9 @@ exports.allCustomers =  async (req, res, next) => {
             .estimatedDocumentCount()
             .skip((page - 1) * pagination)
             .limit(pagination)
+            .sort({'created_at': -1})
 
-        const customer = await Customer.find((err, Customer) => {
+        const customer = await Customer.find((err, customer) => {       
             if (err) {
                 return res.status(400).json({
                     error: err
