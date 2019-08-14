@@ -39,7 +39,13 @@ exports.findLastAmount = async(req, res, next) => {
             if (error) {
                 return res.status(400).json({'message': 'ERROR'});
             }
-        }).limit(1).sort({'created_at': -1});
+            return 1;
+        })
+        .populate("trader", "_id")
+        .limit(1)
+        .sort({'created_at': -1})
+        .exec();
+        
     } catch (error) {
         
     }

@@ -6,11 +6,14 @@ const {
 } = require('../controller/TraderController');
 
 const {
-    createAmountToPay
+    createAmountToPay,
+    findLastAmount
 } = require('../controller/TransactionsController');
 const { authenticate } = require('../helpers/authHelpers');
 
 router.post('/createAmountToPay/:traderId', authenticate, createAmountToPay);
+
+router.get('/findLastAmount/:traderId', authenticate, findLastAmount);
 
 router.param("traderId", findTraderById) // any route with :traderId will execute this findTraderById() first
 
