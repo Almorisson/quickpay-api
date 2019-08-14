@@ -163,7 +163,7 @@ exports.register = async (req, res, next) => {
             }
 
             if (req.body.qrCode != undefined) {
-                customer.qrCode.data = fs.writeSync([req.body.iban, req.body.siretNumber, req.body.email]); // Appeler la fonction générer QRcode
+                customer.qrCode.data = fs.writeSync([req.body.iban, req.body.siretNumber, req.body.email]); // Appeler la fonction gï¿½nï¿½rer QRcode
                 customer.qrCode.contentType = res.set("Content-Type", "png");
             }
             trader.qrcode = req.body.qrcode
@@ -263,7 +263,7 @@ exports.profile = async function(req, res, next) {
 //         if(!trader) {
 //             return res.status(401).json({message: "Trader not found"})
 //         }
-//         //trader = await trader.select("firstName, lastName, iban, siretNumber, country, address") // sélectionner les champs qu'on veut retourner
+//         //trader = await trader.select("firstName, lastName, iban, siretNumber, country, address") // sï¿½lectionner les champs qu'on veut retourner
 //         return res.send({trader})
 //     } catch (err) {
 //         next(err)
@@ -318,7 +318,7 @@ exports.update = async (req, res, next) => {
     try {
         validationHandler(req)
         let trader = req.profile
-        trader = _.extend(trader,  req.body) // change les champs renseignés dans le body de la requête
+        trader = _.extend(trader,  req.body) // change les champs renseignï¿½s dans le body de la requï¿½te
         trader.updated_at = Date.now()
 
         trader.country = capitalize(req.body.country)
@@ -376,7 +376,7 @@ exports.allTraders =  async (req, res, next) => {
     }
 }
 
-// hasAuthorized : Permet de vérifier si un commerçant peut exécuter certaines actions sur un endpoint(ou ressource)
+// hasAuthorized : Permet de vï¿½rifier si un commerï¿½ant peut exï¿½cuter certaines actions sur un endpoint(ou ressource)
 exports.hasAuthorized = (req, res, next) => {
     const authorized = req.profile && req.auth && req.profile._id === req.auth._id
     if(!authorized) {

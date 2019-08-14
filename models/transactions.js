@@ -25,8 +25,9 @@ const TransactionSchema = mongoose.Schema({
             default: false
         },
     },
+    created_at: {type: Date, default: Date.now},
     trader: {type: ObjectId, ref: "Trader"},
-    customer: {typ: ObjectId, ref: "Customer"}
+    customer: {type: ObjectId, ref: "Customer"}
 }, {versionKey: false // You should be aware of the outcome after set to false
 })
 

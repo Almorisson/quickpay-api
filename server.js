@@ -13,6 +13,7 @@ const traderRoutes = require('./routes/traderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes')
 const billingPlanRoutes = require('./routes/billingPlanRoutes')
 const passportJWT = require('./middlewares/passportJWT')();
+const transactionRoutes = require('./routes/transactionRoutes')
 const app = express();
 //Dotenv Config
 //dotenv.config()
@@ -43,6 +44,7 @@ app.use('/api/v1/customers', customerRoutes);
 app.use('/api/v1/traders', traderRoutes);
 app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1/billing-plans', billingPlanRoutes);
+app.use('/api/v1/transactions', transactionRoutes);
 
 //app.use(unAuthorizedError)
 app.use(errors)
