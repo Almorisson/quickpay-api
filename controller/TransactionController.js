@@ -10,7 +10,7 @@ const Transaction = require('../models/transactions')
 const validationHandler = require('../validations/validationHandler')
 
 exports.createAmountToPay = async(req, res, next) => {
-    
+
     try {
         let transaction = await new Transaction();
         transaction.amount = req.body.amount;
@@ -23,11 +23,24 @@ exports.createAmountToPay = async(req, res, next) => {
         } else {
             transaction.trader = req.profile._id;
         }
-        transaction = await transaction.save();
-        return res.status(200).json({
-            'message': 'success',
-            'transaction': {transaction}
-        });    
+        transaction = await transaction.populate('trader')
+                                        .execPopulate().then((trader, reject) => {
+                                            if(reject) {
+                                                const error = new Error();
+                                                error.statusCode = 400;
+                                                error.message = "Bad request";
+                                                throw error;
+                                            }
+                                            return trader
+                                        });
+        await transaction.save((err) => {
+            if (err) {
+                return res.status(400).json({
+                    message: "Something went wrong" + err
+                })
+            }
+        });
+        return res.send({transaction});
     } catch (error) {
         next(error)
     }
@@ -45,8 +58,8 @@ exports.findLastAmount = async(req, res, next) => {
         .limit(1)
         .sort({'created_at': -1})
         .exec();
-        
+
     } catch (error) {
-        
+
     }
 }

@@ -479,29 +479,29 @@ exports.allCustomers =  async (req, res, next) => {
         const page = req.query.page ? parseInt(req.query.page) : 1;
 
         // Count the total of posts per page
-        const totalOfCustomer = await Customer.estimatedDocumentCount()
+        const totalOfCustomers = await Customer.estimatedDocumentCount()
         const numberOfCustomerPerPage = await Customer
             .estimatedDocumentCount()
             .skip((page - 1) * pagination)
             .limit(pagination)
-            .sort({'created_at': -1})
 
-        const customer = await Customer.find((err, customer) => {       
+        const customers = await Customer.find((err, customers) => {
             if (err) {
                 return res.status(400).json({
                     error: err
                 });
             }
+            return customers;
         })
         .skip((page - 1) * pagination)
         .limit(pagination)
-        //.populate("customer").sort({ createdAt: -1})
-        .select('email firstName lastName nameSociety iban phoneNumber')
+        .select('_id email firstName lastName phoneNumber')
+        .sort({ created_at: -1});
 
         return res.json({
                         "page": page,
                         "Customer display on this page": numberOfCustomerPerPage ,
-                        "Total of Customer": totalOfCustomer, customer
+                        "Total of Customer": totalOfCustomers, customers
                     })
     } catch (err) {
         next(err)
