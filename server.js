@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 const cors = require('cors');
 const { unAuthorizedError, errors } = require('./middlewares/errorHandler')
+const apiDocsRoutes = require('./routes/apiDocsRoutes')
 const customerRoutes = require('./routes/customerRoutes');
 const traderRoutes = require('./routes/traderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes')
@@ -15,8 +16,6 @@ const billingPlanRoutes = require('./routes/billingPlanRoutes')
 const passportJWT = require('./middlewares/passportJWT')();
 const transactionRoutes = require('./routes/transactionRoutes')
 const app = express();
-//Dotenv Config
-//dotenv.config()
 
 // Using cors middleware
 app.use(cors())
@@ -40,6 +39,7 @@ app.use(cookieParser());
 app.use('uploads', express.static('uploads'));
 app.use(passportJWT.initialize())
 
+app.use('/', apiDocsRoutes);
 app.use('/api/v1/customers', customerRoutes);
 app.use('/api/v1/traders', traderRoutes);
 app.use('/api/v1/payments', paymentRoutes);

@@ -6,8 +6,9 @@ const {
         allCustomers, getCustomerById,
         unregister, update, addPhoto,
         customerAddPhoto,forgotPassword,
-        resetPassword
+        resetPassword, getAllCustomersRoutes
         } = require('../controller/CustomerController');
+
 const { sendEmail } = require("../helpers/authHelpers");
 
 // import password reset validator
@@ -59,16 +60,6 @@ router.put("/profile/photo", customerAddPhoto); // Pour un update de profile
 // password forgot and reset routes
 router.put("/forgot-password", forgotPassword);
 router.put("/reset-password", passwordResetValidator, resetPassword);
-
-
-
-// router.put('/users', CustomerController.updateProfile);
-// router.put('/password', CustomerController.updatePassword);
-// router.delete('/users/', CustomerController.delete);
-// router.delete('/unregister', CustomerController.unregister);
-// //user.post("/profile/photo", folderName("uploads").single("image"), usersController.addPhoto);
-// router.post("/profile/photo", upload.single("image"), CustomerController.addPhoto);
-// router.post('/transaction', CustomerController.transaction);
 
 router.param("customerId", findCustomerById) // any route with :traderId will execute this findCustomerById() first
 
