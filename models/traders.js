@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const validator = require("email-validator")
 const mongoose = require('mongoose')
-const { objectId } = mongoose.Schema
+const { ObjectId } = mongoose.Schema
 
 const TraderSchema = mongoose.Schema({
     firstName: {type: String, required:true, capitalize: true, minLength: 2, maxLength: 100},
@@ -32,7 +32,8 @@ const TraderSchema = mongoose.Schema({
     qrCode: {
         data: Buffer,
         contentType: String
-    }
+    },
+    transaction: {type: ObjectId, ref: "Transaction"}
 }, {versionKey: false // You should be aware of the outcome after set to false
 })
 

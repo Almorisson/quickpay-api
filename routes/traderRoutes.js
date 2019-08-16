@@ -5,7 +5,7 @@ const {
         register, login, logout,
         findTraderById, profile,
         allTraders, getTraderById,
-        unregister, update
+        unregister, update, getAllTradersRoutes
         } = require('../controller/TraderController');
 
 const { isEmail, hasPassword, hasFirstName, hasLastName } = require('../validations/validators');

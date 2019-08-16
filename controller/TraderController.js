@@ -342,16 +342,18 @@ exports.allTraders =  async (req, res, next) => {
             .skip((page - 1) * pagination)
             .limit(pagination)
 
-        const traders = await Trader.find((err, traders) => {
+        const traders = await Trader.find(async (err, traders) => {
             if (err) {
                 return res.status(400).json({
                     error: err
                 });
             }
+            return traders;
         })
         .skip((page - 1) * pagination)
         .limit(pagination)
-        .select('email firstName lastName nameSociety iban phoneNumber')
+        .select('_id email firstName lastName nameSociety iban phoneNumber')
+        .sort({created_at: -1});
 
         return res.json({
             "page": page,
