@@ -25,7 +25,7 @@ exports.generateQrCode = async(req, res, next) => {
         // Generate QR Code from text
         const __base = 'https://quickpay.herokuapp.com/';
         const qr_png = qr.imageSync(`${__base}api/v1/transactions/createAmountToPay?${iban}&${_id}&${amount}`, { type: 'png'})
-        console.log(qr_png)
+        //console.log(qr_png)
 
         if(qr_png != null ) {
             trader.qrCode.data = qr_png
