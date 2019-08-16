@@ -52,7 +52,7 @@ exports.findLastAmount = async(req, res, next) => {
             if (error) {
                 return res.status(400).json({'message': 'ERROR'});
             }
-            return 1;
+            return transaction;
         })
         .populate("trader", "_id")
         .limit(1)

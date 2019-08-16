@@ -13,6 +13,7 @@ const customerRoutes = require('./routes/customerRoutes');
 const traderRoutes = require('./routes/traderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes')
 const billingPlanRoutes = require('./routes/billingPlanRoutes')
+const qrCodeRoutes = require('./routes/qrCodeRoutes')
 const passportJWT = require('./middlewares/passportJWT')();
 const transactionRoutes = require('./routes/transactionRoutes')
 const app = express();
@@ -45,6 +46,7 @@ app.use('/api/v1/traders', traderRoutes);
 app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1/billing-plans', billingPlanRoutes);
 app.use('/api/v1/transactions', transactionRoutes);
+app.use('/api/v1/qr-codes/', qrCodeRoutes);
 
 //app.use(unAuthorizedError)
 app.use(errors)
