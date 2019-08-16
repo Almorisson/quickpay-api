@@ -13,7 +13,7 @@ const fs = require('fs')
 
 exports.generateQrCode = async(req, res, next) => {
     try {
-
+        
         validationHandler(req)
         // Find trader infos to dump in the QRcode
         let trader = await Trader.findOne({_id: req.profile._id})

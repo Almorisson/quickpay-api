@@ -1,5 +1,4 @@
 const express = require('express')
-const config = require('./config')
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
@@ -7,14 +6,16 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { unAuthorizedError, errors } = require('./middlewares/errorHandler');
+const config = require('./config');
 const apiDocsRoutes = require('./routes/apiDocsRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const traderRoutes = require('./routes/traderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const billingPlanRoutes = require('./routes/billingPlanRoutes');
 const qrCodeRoutes = require('./routes/qrCodeRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 const passportJWT = require('./middlewares/passportJWT')();
-const transactionRoutes = require('./routes/transactionRoutes')
+
 
 const app = express();
 
