@@ -332,7 +332,7 @@ exports.update = async (req, res, next) => {
 exports.allTraders =  async (req, res, next) => {
     try {
         // Declaring before if not exists "pagination et page" variables
-        const pagination = req.query.pagination ? parseInt(req.query.pagination ) : 10;
+        const pagination = req.query.pagination ? parseInt(req.query.pagination) : 10;
         const page = req.query.page ? parseInt(req.query.page) : 1;
 
         // Count the total of posts per page
@@ -354,10 +354,10 @@ exports.allTraders =  async (req, res, next) => {
         .select('email firstName lastName nameSociety iban phoneNumber')
 
         return res.json({
-                        "page": page,
-                        "Traders display on this page": numberOfTradersPerPage ,
-                        "Total of traders": totalOfTraders, traders
-                    })
+            "page": page,
+            "Traders display on this page": numberOfTradersPerPage ,
+            "Total of traders": totalOfTraders, traders
+        })
     } catch (err) {
         next(err)
     }
