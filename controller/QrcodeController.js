@@ -12,28 +12,29 @@ const qr = require('qr-image');
 const fs = require('fs')
 const config = require('../config')
 
-exports.generateQrCode = async(req, res, next) => {
+exports.generateQrCode = async (req, res, next) => {
     try {
 
         validationHandler(req)
         // Find trader infos to dump in the QRcode
-        let trader = await Trader.findOne({_id: req.profile._id})
+        let trader = await Trader.findOne({ _id: req.profile._id })
 
-        const { iban, _id, nameSociety, qrCode , firstName, lastName } = trader
+        const { iban, _id, nameSociety, qrCode, firstName, lastName } = trader
         // Get the text to generate QR code
         let amount = req.body.amount
 
         // Generate QR Code from text
         let __base = null
-        process.env.NODE_ENV === "production" ? __base =  'https://quickpay.herokuapp.com/' : __base = `http://${config.HOST}:${config.PORT}/`;
-        const qr_png = qr.imageSync(`${__base}api/v1/transactions/createAmountToPay?${iban}&${_id}&${amount}`, { type: 'png'})
+        //process.env.NODE_ENV === "production" ? __base =  'https://quickpay.herokuapp.com/' : __base = `http://${config.HOST}:${config.PORT}/`;
+        __base = 'https://quickpay.herokuapp.com/'
+        const qr_png = qr.imageSync(`${__base}api/v1/transactions/createAmountToPay?${iban}&${_id}&${amount}`, { type: 'png' })
         //console.log(qr_png)
 
-        if(qr_png != null ) {
+        if (qr_png != null) {
             trader.qrCode.data = qr_png
             trader.qrCode.contentType = 'png'
-            await trader.save((err, trader)=> {
-                if(err) {
+            await trader.save((err, trader) => {
+                if (err) {
                     return res.status(400).json({
                         error: err
                     })
@@ -46,7 +47,7 @@ exports.generateQrCode = async(req, res, next) => {
         let qr_code_file_name = `${nameSociety.replace(' ', '')}_${new Date().getTime()}.png`;
         const file_name = path.join(__dirname, `../public/qr/${qr_code_file_name}`)
         fs.writeFileSync(file_name, qr_png, err => {
-            if(err){
+            if (err) {
                 console.log(err);
             }
 
@@ -54,7 +55,7 @@ exports.generateQrCode = async(req, res, next) => {
         // Send the link of generated QR code
         return res.send({
             'qr_img': `${__base}public/qr/${qr_code_file_name}`,
-            trader: {_id, iban, qrCode }
+            trader: { _id, iban, qrCode }
         });
     } catch (error) {
         next(error)

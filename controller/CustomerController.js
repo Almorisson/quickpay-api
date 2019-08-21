@@ -388,6 +388,7 @@ exports.logout = async (req, res, next) => {
     }
 }
 //update controller
+/*
 exports.update = async (req, res, next) => {
     try {
 
@@ -428,6 +429,35 @@ exports.update = async (req, res, next) => {
             return res.send({ customer });
 
         });
+
+    } catch (err) {
+        next(err)
+    }
+}*/
+
+exports.update = async (req, res, next) => {
+    try {
+        validationHandler(req)
+        let customer = req.profile
+        customer = _.extend(customer, req.body) // change les champs renseign�s dans le body de la requ�te
+        customer.updated_at = Date.now()
+
+        customer.country = capitalize(req.body.country)
+        let tempStr = customer.country.substring(0, 2)
+        customer.codeCountry = tempStr.toUpperCase()
+
+        await customer.save();
+        /*err => {
+            if(err) {
+                let error = new Error("Wrong Request ! You don't have permissions to update profile Trader.");
+                error.statusCode = 400;
+                throw error;
+            }
+            //return res.status(400).json(err)
+        })
+        */
+
+        return res.send({ customer });
 
     } catch (err) {
         next(err)
