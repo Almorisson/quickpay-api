@@ -10,6 +10,7 @@ const validationHandler = require('../validations/validationHandler')
 const path = require('path')
 const qr = require('qr-image');
 const fs = require('fs')
+const config = require('../config')
 
 exports.generateQrCode = async(req, res, next) => {
     try {
@@ -23,7 +24,8 @@ exports.generateQrCode = async(req, res, next) => {
         let amount = req.body.amount
 
         // Generate QR Code from text
-        const __base = 'https://quickpay.herokuapp.com/';
+        let __base = null
+        process.env.NODE_ENV === "production" ? __base =  'https://quickpay.herokuapp.com/' : __base = `http://${config.HOST}:${config.PORT}/`;
         const qr_png = qr.imageSync(`${__base}api/v1/transactions/createAmountToPay?${iban}&${_id}&${amount}`, { type: 'png'})
         //console.log(qr_png)
 
@@ -41,7 +43,7 @@ exports.generateQrCode = async(req, res, next) => {
         }
         // Generate a random file name
         const name = `${firstName}${lastName}`;
-        let qr_code_file_name = `${name.replace(' ', '')}_${new Date().getTime()}.png`;
+        let qr_code_file_name = `${nameSociety.replace(' ', '')}_${new Date().getTime()}.png`;
         const file_name = path.join(__dirname, `../public/qr/${qr_code_file_name}`)
         fs.writeFileSync(file_name, qr_png, err => {
             if(err){

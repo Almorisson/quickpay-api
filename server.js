@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-//app.use('uploads', express.static('uploads'));
+//app.use('/uploads', express.static(_dirname + '/uploads'));
 app.use('/public', express.static(__dirname + '/public'))
 app.use(passportJWT.initialize())
 
