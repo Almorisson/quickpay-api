@@ -11,7 +11,7 @@ const {
 } = require('../controller/TransactionController');
 const { authenticate } = require('../helpers/authHelpers');
 
-router.post('/createAmountToPay/:traderId', authenticate, createAmountToPay);
+router.get('/createAmountToPay/:traderId', authenticate, createAmountToPay);
 
 router.get('/findLastAmount/:traderId', authenticate, findLastAmount);
 

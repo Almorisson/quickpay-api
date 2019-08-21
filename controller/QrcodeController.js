@@ -28,7 +28,6 @@ exports.generateQrCode = async(req, res, next) => {
         process.env.NODE_ENV === "production" ? __base =  'https://quickpay-api.herokuapp.com/' : __base = `http://${config.HOST}:${config.PORT}/`;
         const qr_png = qr.imageSync(`${__base}api/v1/transactions/createAmountToPay?${iban}&${_id}&${amount}`, { type: 'png'})
         //console.log(qr_png)
-
         if(qr_png != null ) {
             trader.qrCode.data = qr_png
             trader.qrCode.contentType = 'png'
