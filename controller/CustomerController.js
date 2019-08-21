@@ -310,7 +310,7 @@ exports.register = async (req, res, next) => {
         if (req.body.birthDay && req.body.birthDay !== "") {
             customer.birthDay = req.body.birthDay
         }
-        //customer.creditCard = req.body.creditCard
+        customer.creditCard = req.body.creditCard
 
         customer = await customer.save();
 

@@ -6,14 +6,14 @@
  */
 
 const
-    Trader              =   require('../models/traders')
-    jwt                 =   require('jsonwebtoken'),
-    jwt_decode          =   require('jwt-decode'),
-    { capitalize }      =   require('../helpers'),
-    _                   =   require('lodash') // convention de nommage pour stocker l'objet {lodash}
-    config              =   require('../config')
-    validationHandler   =   require('../validations/validationHandler')
-    formidable          =   require('formidable')
+    Trader = require('../models/traders')
+jwt = require('jsonwebtoken'),
+    jwt_decode = require('jwt-decode'),
+    { capitalize } = require('../helpers'),
+    _ = require('lodash') // convention de nommage pour stocker l'objet {lodash}
+config = require('../config')
+validationHandler = require('../validations/validationHandler')
+formidable = require('formidable')
 
 // module.exports = {
 //     registerTrader: async function(req, res) {
@@ -119,8 +119,8 @@ exports.register = async (req, res, next) => {
     try {
         validationHandler(req);
 
-        const existingTrader = await Trader.findOne({email: req.body.email})
-        if(existingTrader) {
+        const existingTrader = await Trader.findOne({ email: req.body.email })
+        if (existingTrader) {
             const error = new Error("Email is already in used!")
             error.statusCode = 403;
             throw error;
@@ -132,22 +132,22 @@ exports.register = async (req, res, next) => {
         trader.nameSociety = capitalize(req.body.nameSociety)
         trader.password = await trader.encryptPassword(req.body.password)
         trader.phoneNumber = req.body.phoneNumber,
-        //birthDay: req.body.birthDay,
-        trader.address = req.body.address,
-        trader.postalCode = req.body.postalCode,
-        trader.city = capitalize(req.body.city),
-        trader.siretNumber = req.body.siretNumber,
-        trader.iban = req.body.iban
+            //birthDay: req.body.birthDay,
+            trader.address = req.body.address,
+            trader.postalCode = req.body.postalCode,
+            trader.city = capitalize(req.body.city),
+            trader.siretNumber = req.body.siretNumber,
+            trader.iban = req.body.iban
 
-        if(req.body.country && req.body.country !== "") {
+        if (req.body.country && req.body.country !== "") {
             trader.country = capitalize(req.body.country)
-            let tempStr= req.body.country.substring(0, 2)
+            let tempStr = req.body.country.substring(0, 2)
             trader.codeCountry = tempStr.toUpperCase()
         }
 
         // if (files.picture) {
-        //         customer.picture.data = fs.readFileSync(files.picture.path);
-        //         customer.picture.contentType = files.picture.type;
+        //     customer.picture.data = fs.readFileSync(files.picture.path);
+        //     customer.picture.contentType = files.picture.type;
         // }
 
         // if (req.body.qrCode != undefined) {
@@ -158,8 +158,8 @@ exports.register = async (req, res, next) => {
 
         trader = await trader.save();
 
-        const token = jwt.sign({id: trader.id}, config.JWT_SECRET_KEY)
-        return res.send({trader, token})
+        const token = jwt.sign({ id: trader.id }, config.JWT_SECRET_KEY)
+        return res.send({ trader, token })
 
     } catch (err) {
         next(err)
@@ -173,24 +173,24 @@ exports.login = async (req, res, next) => {
         const email = req.body.email
         const password = req.body.password
 
-        const trader = await Trader.findOne({email}).select("+password")
-        if(!trader) {
+        const trader = await Trader.findOne({ email }).select("+password")
+        if (!trader) {
             const error = new Error("Wrong Email")
             error.statusCode = 401;
             throw error;
         }
 
         const validPassword = await trader.validPassword(password)
-        if(!validPassword) {
+        if (!validPassword) {
             const error = new Error("Wrong Password")
             error.statusCode = 401;
             throw error;
         }
 
-        const token = jwt.sign({id: trader.id}, config.JWT_SECRET_KEY)
-        res.cookie("tok", token, {expire: new Date() + 99999})
+        const token = jwt.sign({ id: trader.id }, config.JWT_SECRET_KEY)
+        res.cookie("tok", token, { expire: new Date() + 99999 })
 
-        return res.send({trader, token})
+        return res.send({ trader, token })
     } catch (err) {
         next(err)
     }
@@ -199,46 +199,46 @@ exports.login = async (req, res, next) => {
 // logout controller
 exports.logout = async (req, res, next) => {
     try {
-            const response = await res.clearCookie("tok")
+        const response = await res.clearCookie("tok")
 
-            if(!response) {
-                const error = new Error("Something went wrong when trying to log out you !")
-                error.statusCode = 500;
-                throw error;
-            }
+        if (!response) {
+            const error = new Error("Something went wrong when trying to log out you !")
+            error.statusCode = 500;
+            throw error;
+        }
 
-            return res.send({"message": "Logged out successfully !"});
+        return res.send({ "message": "Logged out successfully !" });
     } catch (err) {
         next(err)
     }
 }
 
 // profile controller
-exports.profile = async function(req, res, next) {
-        try {
+exports.profile = async function (req, res, next) {
+    try {
 
-            validationHandler(req)
+        validationHandler(req)
 
-            if (req.headers.token != null) {
-                let email = await jwt_decode(req.headers.token).email;
-                await Trader.findOne({
-                    email: email
-                }, function(err, trader) {
-                    if (trader)
-                        return res.status(200).json(trader)
-                    else
-                        return res.status(400).json({message: "Profile not found" + err});
-                })
-            } else {
-                return res.send({message: "Trader Access to profile forbidden ! You need to send the authentication token."})
-            }
-
-            // const trader = await Trader.findById(req.trader)
-            // return res.send({trader})
-
-        } catch (err) {
-            next(err)
+        if (req.headers.token != null) {
+            let email = await jwt_decode(req.headers.token).email;
+            await Trader.findOne({
+                email: email
+            }, function (err, trader) {
+                if (trader)
+                    return res.status(200).json(trader)
+                else
+                    return res.status(400).json({ message: "Profile not found" + err });
+            })
+        } else {
+            return res.send({ message: "Trader Access to profile forbidden ! You need to send the authentication token." })
         }
+
+        // const trader = await Trader.findById(req.trader)
+        // return res.send({trader})
+
+    } catch (err) {
+        next(err)
+    }
 }
 
 // findTraderById controller
@@ -258,19 +258,19 @@ exports.profile = async function(req, res, next) {
 // }
 
 // findTraderById controller/method to easily query DB and retrieve a trader
-exports.findTraderById = async function(req, res, next, id) {
+exports.findTraderById = async function (req, res, next, id) {
     try {
         validationHandler(req)
         let trader = await Trader.findById(id)
             .exec((err, trader) => {
-                if(err || !trader ) {
+                if (err || !trader) {
                     return res.status(400).json({
                         error: "Trader not found !"
                     })
                 }
-            req.profile = trader // adds profile object to req with trader info
-            next()
-        });
+                req.profile = trader // adds profile object to req with trader info
+                next()
+            });
     } catch (err) {
         next(err)
     }
@@ -283,18 +283,18 @@ exports.getTraderById = (req, res) => {
 }
 
 // unregister controller
-exports.unregister = async function(req, res, next) {
+exports.unregister = async function (req, res, next) {
     validationHandler(req)
     try {
         let trader = req.profile
         await trader.remove((err, deletedTrader) => {
-        if(err) {
-           return res.status(400).json({
-               error: "You don't have authorized to delete a trader."
-           })
-        }
-        return res.send({message: `The account ${deletedTrader.email} was unregistered successfully !`});
-    });
+            if (err) {
+                return res.status(400).json({
+                    error: "You don't have authorized to delete a trader."
+                })
+            }
+            return res.send({ message: `The account ${deletedTrader.email} was unregistered successfully !` });
+        });
     } catch (error) {
         next()
     }
@@ -305,14 +305,15 @@ exports.update = async (req, res, next) => {
     try {
         validationHandler(req)
         let trader = req.profile
-        trader = _.extend(trader,  req.body) // change les champs renseign�s dans le body de la requ�te
+        trader = _.extend(trader, req.body) // change les champs renseign�s dans le body de la requ�te
         trader.updated_at = Date.now()
 
         trader.country = capitalize(req.body.country)
-        let tempStr= trader.country.substring(0, 2)
+        let tempStr = trader.country.substring(0, 2)
         trader.codeCountry = tempStr.toUpperCase()
 
-        await trader.save(err => {
+        await trader.save();
+        /*err => {
             if(err) {
                 let error = new Error("Wrong Request ! You don't have permissions to update profile Trader.");
                 error.statusCode = 400;
@@ -320,8 +321,9 @@ exports.update = async (req, res, next) => {
             }
             //return res.status(400).json(err)
         })
+        */
 
-        return res.send({trader});
+        return res.send({ trader });
 
     } catch (err) {
         next(err)
@@ -329,7 +331,7 @@ exports.update = async (req, res, next) => {
 }
 
 // List all Traders
-exports.allTraders =  async (req, res, next) => {
+exports.allTraders = async (req, res, next) => {
     try {
         // Declaring before if not exists "pagination et page" variables
         const pagination = req.query.pagination ? parseInt(req.query.pagination) : 10;
@@ -350,14 +352,14 @@ exports.allTraders =  async (req, res, next) => {
             }
             return traders;
         })
-        .skip((page - 1) * pagination)
-        .limit(pagination)
-        .select('_id email firstName lastName nameSociety iban phoneNumber')
-        .sort({created_at: -1});
+            .skip((page - 1) * pagination)
+            .limit(pagination)
+            .select('_id email firstName lastName nameSociety iban phoneNumber')
+            .sort({ created_at: -1 });
 
         return res.json({
             "page": page,
-            "Traders display on this page": numberOfTradersPerPage ,
+            "Traders display on this page": numberOfTradersPerPage,
             "Total of traders": totalOfTraders, traders
         })
     } catch (err) {
@@ -368,7 +370,7 @@ exports.allTraders =  async (req, res, next) => {
 // hasAuthorized : Permet de v�rifier si un commer�ant peut ex�cuter certaines actions sur un endpoint(ou ressource)
 exports.hasAuthorized = (req, res, next) => {
     const authorized = req.profile && req.auth && req.profile._id === req.auth._id
-    if(!authorized) {
+    if (!authorized) {
         return res.status(403).json({
             error: "You are not authorized di perform this action."
         })
