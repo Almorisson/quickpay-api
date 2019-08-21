@@ -25,26 +25,24 @@ exports.generateQrCode = async (req, res, next) => {
 
         // Generate QR Code from text
         let __base = null
-        //process.env.NODE_ENV === "production" ? __base =  'https://quickpay.herokuapp.com/' : __base = `http://${config.HOST}:${config.PORT}/`;
-        __base = 'https://quickpay.herokuapp.com/'
-        const qr_png = qr.imageSync(`${__base}api/v1/transactions/createAmountToPay?${iban}&${_id}&${amount}`, { type: 'png' })
+        process.env.NODE_ENV === "production" ? __base =  'https://quickpay-api.herokuapp.com/' : __base = `http://${config.HOST}:${config.PORT}/`;
+        const qr_png = qr.imageSync(`${_id};${iban};${amount}`, { type: 'png'})
         //console.log(qr_png)
-
-        if (qr_png != null) {
-            trader.qrCode.data = qr_png
-            trader.qrCode.contentType = 'png'
-            await trader.save((err, trader) => {
-                if (err) {
-                    return res.status(400).json({
-                        error: err
-                    })
-                }
-                return trader
-            })
-        }
+        // if(qr_png != null ) {
+        //     //trader.qrCode.data = qr_png
+        //     //trader.qrCode.contentType = 'png'
+        //     await trader.save((err, trader)=> {
+        //         if(err) {
+        //             return res.status(400).json({
+        //                 error: err
+        //             })
+        //         }
+        //         return trader
+        //     })
+        // }
         // Generate a random file name
         const name = `${firstName}${lastName}`;
-        let qr_code_file_name = `${nameSociety.replace(' ', '')}_${new Date().getTime()}.png`;
+        let qr_code_file_name = `${nameSociety.replace(' ', '')}_${firstName}_${new Date().getTime()}.png`;
         const file_name = path.join(__dirname, `../public/qr/${qr_code_file_name}`)
         fs.writeFileSync(file_name, qr_png, err => {
             if (err) {

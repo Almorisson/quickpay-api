@@ -433,7 +433,8 @@ exports.update = async (req, res, next) => {
     } catch (err) {
         next(err)
     }
-}*/
+}
+*/
 
 exports.update = async (req, res, next) => {
     try {
