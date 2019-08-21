@@ -14,7 +14,6 @@ const { findTraderById } = require('../controller/TraderController')
 
 
 router.post('/:traderId/generate', authenticate, generateQrCode);
-router.post('/:traderId/createAmount', authenticate, generateQrCode);
 
 router.param("traderId", findTraderById);
 
