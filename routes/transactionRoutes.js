@@ -9,6 +9,7 @@ const {
     createAmountToPay,
     findLastAmount
 } = require('../controller/TransactionController');
+
 const { authenticate } = require('../helpers/authHelpers');
 
 router.get('/createAmountToPay/:traderId', authenticate, createAmountToPay);
