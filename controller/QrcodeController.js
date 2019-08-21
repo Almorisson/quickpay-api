@@ -13,12 +13,12 @@ const fs = require('fs')
 
 exports.generateQrCode = async(req, res, next) => {
     try {
-        
+
         validationHandler(req)
         // Find trader infos to dump in the QRcode
         let trader = await Trader.findOne({_id: req.profile._id})
 
-        const { iban, _id, nameSociety, qrCode } = trader
+        const { iban, _id, nameSociety, qrCode , firstName, lastName } = trader
         // Get the text to generate QR code
         let amount = req.body.amount
 
@@ -40,7 +40,8 @@ exports.generateQrCode = async(req, res, next) => {
             })
         }
         // Generate a random file name
-        let qr_code_file_name = `${nameSociety.replace(' ', '')}_${new Date().getTime()}.png`;
+        const name = `${firstName}${lastName}`;
+        let qr_code_file_name = `${name.replace(' ', '')}_${new Date().getTime()}.png`;
         const file_name = path.join(__dirname, `../public/qr/${qr_code_file_name}`)
         fs.writeFileSync(file_name, qr_png, err => {
             if(err){
