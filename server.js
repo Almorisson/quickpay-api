@@ -24,13 +24,13 @@ app.use(cors())
 
 //db connection
 mongoose.connect(
-  config.MONGO_URI_ATLAS,
-  {useNewUrlParser: true, useCreateIndex: true}
+    config.MONGO_URI_ATLAS,
+    { useNewUrlParser: true, useCreateIndex: true }
 )
-.then(() => console.log('DB Connected'))
+    .then(() => console.log('DB Connected'))
 
 mongoose.connection.on('error', err => {
-  console.log(`DB connection error: ${err.message}`)
+    console.log(`DB connection error: ${err.message}`)
 });
 
 
@@ -38,6 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+app.use('/public', express.static(__dirname + '/public'))
 app.use('uploads', express.static('uploads'));
 app.use(passportJWT.initialize())
 
@@ -52,7 +53,7 @@ app.use('/api/v1/transactions', transactionRoutes);
 //app.use(unAuthorizedError)
 app.use(errors)
 
-app.listen(config.PORT, config.HOST, function(){
+app.listen(config.PORT, config.HOST, function () {
     console.log(`Server is listening on http://${config.HOST}:${config.PORT}`);
 });
 
