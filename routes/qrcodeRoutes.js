@@ -9,7 +9,7 @@ const express = require('express');
 const router = express.Router();
 
 const { authenticate } = require('../helpers/authHelpers')
-const { generateQrCode } = require('../controller/QRCodeController')
+const { generateQrCode } = require('../controller/QrcodeController')
 const { findTraderById } = require('../controller/TraderController')
 
 

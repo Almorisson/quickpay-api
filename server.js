@@ -12,7 +12,7 @@ const customerRoutes = require('./routes/customerRoutes');
 const traderRoutes = require('./routes/traderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const billingPlanRoutes = require('./routes/billingPlanRoutes');
-const qrCodeRoutes = require('./routes/qrCodeRoutes');
+const qrCodeRoutes = require('./routes/qrcodeRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const passportJWT = require('./middlewares/passportJWT')();
 

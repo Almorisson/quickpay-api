@@ -5,15 +5,15 @@
  * @copyright : 2019 - 2020 All rights reserved
  */
 const
-    jwt                 = require('jsonwebtoken'),
-    Customer            = require('../models/customers'),
-    jwt_decode          = require('jwt-decode'),
-    validationHandler   = require('../validations/validationHandler'),
-    {capitalize}         = require('../helpers'),
-    _                   = require('lodash'),
-    formidable          = require('formidable'),
-    fs                  = require('fs')
-    config              = require('../config/index')
+    jwt = require('jsonwebtoken'),
+    Customer = require('../models/customers'),
+    jwt_decode = require('jwt-decode'),
+    validationHandler = require('../validations/validationHandler'),
+    { capitalize } = require('../helpers'),
+    _ = require('lodash'),
+    formidable = require('formidable'),
+    fs = require('fs')
+config = require('../config/index')
 
 // module.exports = {
 //     register: async function(req, res){
@@ -276,17 +276,17 @@ exports.register = async (req, res, next) => {
 
         validationHandler(req);
 
-        const existingCustomer = await Customer.findOne({email: req.body.email})
+        const existingCustomer = await Customer.findOne({ email: req.body.email })
 
-        if(existingCustomer) {
+        if (existingCustomer) {
             const error = new Error("Email is already in used!")
             error.statusCode = 403;
             throw error;
         }
 
         let customer = await new Customer();
-        customer.firstName = capitalize(req.body.firstName)
-        customer.lastName = req.body.lastName.toUpperCase()
+        customer.firstName = capitalize(req.body.firstName);
+        customer.lastName = req.body.lastName.toUpperCase();
         customer.email = req.body.email
         customer.password = await customer.encryptPassword(req.body.password)
         customer.phoneNumber = req.body.phoneNumber // TODO: S'assurer que c'est une numéron de téléphone valable
@@ -294,30 +294,31 @@ exports.register = async (req, res, next) => {
         customer.postalCode = req.body.postalCode
         customer.address = req.body.address
 
-        if(req.body.country && req.body.country !== "") {
+        if (req.body.country && req.body.country !== "") {
             customer.country = capitalize(req.body.country)
-            let tempStr= req.body.country.substring(0, 2)
-            customer.codeCountry = tempStr.toUpperCase()
+            let tempStr = req.body.country.substring(0, 2)
+            customer.codeCountry = tempStr.toUpperCase();
         }
 
         // if((req.body.phoneNumber).length < 16 && (req.body.phoneNumber).length > 12) {
         //     customer.phoneNumber = req.body.phoneNumber
         // }
         customer.phoneNumber = req.body.phoneNumber
-        if(req.body.picture && req.body.picture !== "") {
+        if (req.body.picture && req.body.picture !== "") {
             customer.picture = req.body.picture
         }
-        if(req.body.birthDay && req.body.birthDay !== "") {
+        if (req.body.birthDay && req.body.birthDay !== "") {
             customer.birthDay = req.body.birthDay
         }
-        customer.creditCard = req.body.creditCard
+        //customer.creditCard = req.body.creditCard
 
         customer = await customer.save();
 
-        const token = jwt.sign({id: customer.id}, process.env.JWT_SECRET_KEY)
-        return res.send({customer, token})
+        const token = jwt.sign({ id: customer.id }, process.env.JWT_SECRET_KEY)
+        return res.send({ customer, token })
 
     } catch (err) {
+        console.log(err);
         next(err)
     }
 }
@@ -330,58 +331,58 @@ exports.login = async (req, res, next) => {
         const email = req.body.email
         const password = req.body.password
 
-        const customer = await Customer.findOne({email}).select("+password")
-        if(!customer) {
+        const customer = await Customer.findOne({ email }).select("+password")
+        if (!customer) {
             const error = new Error("Wrong Email")
             error.statusCode = 401;
             throw error;
         }
 
         const validPassword = await customer.validPassword(password)
-        if(!validPassword) {
+        if (!validPassword) {
             const error = new Error("Wrong Password")
             error.statusCode = 401;
             throw error;
         }
 
-        const token = jwt.sign({id: customer.id}, process.env.JWT_SECRET_KEY)
-        res.cookie("tok", token, {expire: new Date() + 99999})
+        const token = jwt.sign({ id: customer.id }, process.env.JWT_SECRET_KEY)
+        res.cookie("tok", token, { expire: new Date() + 99999 })
 
-        return res.send({customer, token})
+        return res.send({ customer, token })
     } catch (err) {
         next(err)
     }
 }
 
-exports.profile = async function(req, res, next) {
-        if (req.headers.token != null) {
-            var email = await jwt_decode(req.headers.token).email;
-            await customer.findOne({
-                email: email
-            }, function(err, customer) {
-                if (customer)
-                    return res.send(customer)
-                else
-                    return res.send({message: "Profile not found."});
-            })
-        } else {
-            //console.log(req.headers);
-            return res.send({message: "Access to profile forbidden ! You need to send the authentication token."}) // avoid to send text in the api
-        }
+exports.profile = async function (req, res, next) {
+    if (req.headers.token != null) {
+        var email = await jwt_decode(req.headers.token).email;
+        await customer.findOne({
+            email: email
+        }, function (err, customer) {
+            if (customer)
+                return res.send(customer)
+            else
+                return res.send({ message: "Profile not found." });
+        })
+    } else {
+        //console.log(req.headers);
+        return res.send({ message: "Access to profile forbidden ! You need to send the authentication token." }) // avoid to send text in the api
+    }
 }
 
 // logout controller
 exports.logout = async (req, res, next) => {
     try {
-            const response = await res.clearCookie("tok")
+        const response = await res.clearCookie("tok")
 
-            if(!response) {
-                const error = new Error("Something went wrong when trying to log out you !")
-                error.statusCode = 500;
-                throw error;
-            }
+        if (!response) {
+            const error = new Error("Something went wrong when trying to log out you !")
+            error.statusCode = 500;
+            throw error;
+        }
 
-            return res.send({"message": "Logged out successfully !"});
+        return res.send({ "message": "Logged out successfully !" });
     } catch (err) {
         next(err)
     }
@@ -404,11 +405,11 @@ exports.update = async (req, res, next) => {
 
 
             let customer = req.profile
-            customer = _.extend(customer,  fields) // change les champs renseignés dans le body de la requête
+            customer = _.extend(customer, fields) // change les champs renseignés dans le body de la requête
             customer.updated_at = Date.now()
 
             customer.country = capitalize(req.body.country)
-            let tempStr= customer.country.substring(0, 2)
+            let tempStr = customer.country.substring(0, 2)
             customer.codeCountry = tempStr.toUpperCase()
 
             if (files.picture) {
@@ -416,7 +417,7 @@ exports.update = async (req, res, next) => {
                 customer.picture.contentType = files.picture.type;
             }
             customer.save(err => {
-                if(err) {
+                if (err) {
                     let error = new Error("Wrong Request ! You don't have permissions to update profile Trader.");
                     error.statusCode = 400;
                     throw error;
@@ -424,7 +425,7 @@ exports.update = async (req, res, next) => {
                 return res.status(400).json(err)
             })
 
-        return res.send({customer});
+            return res.send({ customer });
 
         });
 
@@ -434,37 +435,37 @@ exports.update = async (req, res, next) => {
 }
 
 // findCustomerById method to easily query DB and retrieve a Customer
-exports.findCustomerById = async function(req, res, next, id) {
+exports.findCustomerById = async function (req, res, next, id) {
     try {
         validationHandler(req)
         let customer = await Customer.findById(id)
             .sort("created_at")
             .exec((err, customer) => {
-                if(err || !customer ) {
+                if (err || !customer) {
                     return res.status(400).json({
                         error: "Customer not found !"
                     })
                 }
-            req.profile = customer // adds profile object to req with Customer info
-            next()
-        });
+                req.profile = customer // adds profile object to req with Customer info
+                next()
+            });
     } catch (err) {
         next(err)
     }
 }
 // unregister controller
-exports.unregister = async function(req, res, next) {
+exports.unregister = async function (req, res, next) {
     validationHandler(req)
     try {
         let customer = req.profile
         await customer.remove((err, deletedCustomer) => {
-        if(err) {
-           return res.status(400).json({
-               error: "You don't have authorized to delete a customer."
-           })
-        }
-        return res.send({message: `The account ${deletedCustomer.email} was unregistered successfully !`});
-    });
+            if (err) {
+                return res.status(400).json({
+                    error: "You don't have authorized to delete a customer."
+                })
+            }
+            return res.send({ message: `The account ${deletedCustomer.email} was unregistered successfully !` });
+        });
     } catch (error) {
         next()
     }
@@ -472,10 +473,10 @@ exports.unregister = async function(req, res, next) {
 
 // allCustomers controller
 // List all Customers
-exports.allCustomers =  async (req, res, next) => {
+exports.allCustomers = async (req, res, next) => {
     try {
         // Declaring before if not exists "pagination et page" variables
-        const pagination = req.query.pagination ? parseInt(req.query.pagination ) : 10;
+        const pagination = req.query.pagination ? parseInt(req.query.pagination) : 10;
         const page = req.query.page ? parseInt(req.query.page) : 1;
 
         // Count the total of posts per page
@@ -493,16 +494,16 @@ exports.allCustomers =  async (req, res, next) => {
             }
             return customers;
         })
-        .skip((page - 1) * pagination)
-        .limit(pagination)
-        .select('_id email firstName lastName phoneNumber')
-        .sort({ created_at: -1});
+            .skip((page - 1) * pagination)
+            .limit(pagination)
+            .select('_id email firstName lastName phoneNumber')
+            .sort({ created_at: -1 });
 
         return res.json({
-                        "page": page,
-                        "Customer display on this page": numberOfCustomerPerPage ,
-                        "Total of Customer": totalOfCustomers, customers
-                    })
+            "page": page,
+            "Customer display on this page": numberOfCustomerPerPage,
+            "Total of Customer": totalOfCustomers, customers
+        })
     } catch (err) {
         next(err)
     }
@@ -510,22 +511,22 @@ exports.allCustomers =  async (req, res, next) => {
 
 // addPhoto controller : pas nécessaire, il est possible d'appeler la fonction update à la place
 
-exports.addPhoto = async function(req, res) {
-        if (req.headers.token != null) {
-            console.log(req.headers);
-            let id = jwt_decode(req.headers.token)._id
-            await customer.findOne({
-                _id: id
-            }, function(err, customer) {
-                if (req.file) {
-                    customer.picture = req.file.path
-                    customer.save();
-                    res.send(customer);
-                }
-            })
-        } else {
-            res.send({message: "fail"});
-        }
+exports.addPhoto = async function (req, res) {
+    if (req.headers.token != null) {
+        console.log(req.headers);
+        let id = jwt_decode(req.headers.token)._id
+        await customer.findOne({
+            _id: id
+        }, function (err, customer) {
+            if (req.file) {
+                customer.picture = req.file.path
+                customer.save();
+                res.send(customer);
+            }
+        })
+    } else {
+        res.send({ message: "fail" });
+    }
 }
 
 // customerPhoto controller : Permet d'ajouter une photo lorsque le champ picture est renseigné
