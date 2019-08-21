@@ -39,6 +39,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('uploads', express.static('uploads'));
+app.use('/public/qr', express.static('pubic/qr'));
 app.use(passportJWT.initialize())
 
 app.use('/', apiDocsRoutes);
