@@ -29,7 +29,7 @@ exports.createPayment = async (req, res, next) => {
             "transactions": [{
                 "amount": {
                     "currency": "EUR",
-                    "total": "10"
+                    "total": req.body.amount//"10"
                 },
                 "description": "Customer pays Trader with PayPal."
             }]
@@ -43,7 +43,7 @@ exports.createPayment = async (req, res, next) => {
                 throw error;
             } else {
                 for (var index = 0; index < payment.links.length; index++) {
-                //Redirect user to this endpoint for redirect url
+                    //Redirect user to this endpoint for redirect url
                     if (payment.links[index].rel === 'approval_url') {
                         console.log("En cours de création");
 
@@ -64,7 +64,7 @@ exports.executePayment = async (req, res, next) => {
     try {
         validationHandler(req)
         // ExÃ©cution du paiement
-        if(req.query && req.query.paymentId && req.query.PayerID) {
+        if (req.query && req.query.paymentId && req.query.PayerID) {
             const execute_payment_json = {
                 "payer_id": req.query.PayerID
             };
@@ -94,39 +94,39 @@ exports.executePayment = async (req, res, next) => {
                     pay.shippingAddress.city = payment.payer.payer_info.shipping_address.city
                     pay.shippingAddress.postalCode = payment.payer.payer_info.shipping_address.postal_code
                     pay.shippingAddress.codeCountry = payment.payer.payer_info.shipping_address.code_country
-                    pay.trader = await Trader.findOne({email: pay.traderEmail})
-                                            .populate("trader",
-                                                    '_id email firstName lastName iban siretNumber\
+                    pay.trader = await Trader.findOne({ email: pay.traderEmail })
+                        .populate("trader",
+                            '_id email firstName lastName iban siretNumber\
                                                     nameSociety phoneNumber address postalCode city country'
-                                             )
-                                            .select("_id firstName lastName email iban nameSociety\
+                        )
+                        .select("_id firstName lastName email iban nameSociety\
                                                     phoneNumber nameSociety phoneNumber address postalCode city country"
-                                            )
-                                            .exec((err, res) => {
-                                                if(err) {
-                                                    return res.status.json({
-                                                        error: "An error was occured while trying to save transactions in the database."
-                                                    })
-                                                }
-                                            })
-                    pay.Customer = await Customer.findOne({email: pay.customerEmail})
-                                        .populate("trader",
-                                             '_id email firstName lastName creditCard\
+                        )
+                        .exec((err, res) => {
+                            if (err) {
+                                return res.status.json({
+                                    error: "An error was occured while trying to save transactions in the database."
+                                })
+                            }
+                        })
+                    pay.Customer = await Customer.findOne({ email: pay.customerEmail })
+                        .populate("trader",
+                            '_id email firstName lastName creditCard\
                                               phoneNumber address postalCode city country'
-                                        )
-                                        .select("_id firstName lastName email\
+                        )
+                        .select("_id firstName lastName email\
                                                 phoneNumber nameSociety phoneNumber address postalCode city country"
-                                        ).exec((err, res) => {
-                                                if(err) {
-                                                    return res.status.json({
-                                                        error: "An error was occured while trying to save transactions in the database."
-                                                    })
-                                                }
-                                        })
+                        ).exec((err, res) => {
+                            if (err) {
+                                return res.status.json({
+                                    error: "An error was occured while trying to save transactions in the database."
+                                })
+                            }
+                        })
 
                     // Save payment in the database
                     await pay.save(err => {
-                        if(err) {
+                        if (err) {
                             let error = new Error("Wrong Request ! You don't have permissions to update profile Trader.");
                             error.statusCode = 400;
                             throw error;
@@ -134,7 +134,7 @@ exports.executePayment = async (req, res, next) => {
                         return res.status(400).json(err)
                     });
 
-                    return res.send({payment: pay})
+                    return res.send({ payment: pay })
                 }
             });
         }
