@@ -29,7 +29,7 @@ exports.createPayment = async (req, res, next) => {
             "transactions": [{
                 "amount": {
                     "currency": "EUR",
-                    "total": req.body.amount//"10"
+                    "total": req.body.amount //"10"
                 },
                 "description": "Customer pays Trader with PayPal."
             }]
