@@ -29,7 +29,7 @@ exports.createPayment = async (req, res, next) => {
             "transactions": [{
                 "amount": {
                     "currency": "EUR",
-                    "total": 10
+                    "total": req.body.amount
                 },
                 "description": "Customer pays Trader with PayPal."
             }]
@@ -48,7 +48,8 @@ exports.createPayment = async (req, res, next) => {
                         console.log("En cours de création");
 
                         console.log(payment.links[index].href);
-                        res.redirect(payment.links[index].href);
+                        //res.redirect(payment.links[index].href);
+                        res.send(payment.links[index].href) // envoi du lien vers la page de connexion paypal
                     }
                 }
                 console.log(payment);
@@ -94,7 +95,7 @@ exports.executePayment = async (req, res, next) => {
                     pay.shippingAddress.city = payment.payer.payer_info.shipping_address.city
                     pay.shippingAddress.postalCode = payment.payer.payer_info.shipping_address.postal_code
                     pay.shippingAddress.codeCountry = payment.payer.payer_info.shipping_address.code_country
-                    pay.trader = await Trader.findOne({ email: pay.traderEmail })
+                    pay.trader = await Trader.findOne({ email: payment.payment.transactions[0].payee.email })
                         .populate("trader",
                             '_id email firstName lastName iban siretNumber\
                                                     nameSociety phoneNumber address postalCode city country'
@@ -109,7 +110,7 @@ exports.executePayment = async (req, res, next) => {
                                 })
                             }
                         })
-                    pay.Customer = await Customer.findOne({ email: pay.customerEmail })
+                    pay.Customer = await Customer.findOne({ email: payment.payer.payer_info.email })
                         .populate("trader",
                             '_id email firstName lastName creditCard\
                                               phoneNumber address postalCode city country'
