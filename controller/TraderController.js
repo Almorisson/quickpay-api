@@ -354,7 +354,7 @@ exports.allTraders = async (req, res, next) => {
         })
             .skip((page - 1) * pagination)
             .limit(pagination)
-            .select('_id email firstName lastName nameSociety iban phoneNumber')
+            .select('_id email firstName lastName nameSociety address postalCode city latitude longitude iban phoneNumber')
             .sort({ created_at: -1 });
 
         return res.json({
