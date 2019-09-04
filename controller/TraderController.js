@@ -131,13 +131,15 @@ exports.register = async (req, res, next) => {
         trader.email = req.body.email
         trader.nameSociety = capitalize(req.body.nameSociety)
         trader.password = await trader.encryptPassword(req.body.password)
-        trader.phoneNumber = req.body.phoneNumber,
-            //birthDay: req.body.birthDay,
-            trader.address = req.body.address,
-            trader.postalCode = req.body.postalCode,
-            trader.city = capitalize(req.body.city),
-            trader.siretNumber = req.body.siretNumber,
-            trader.iban = req.body.iban
+        trader.phoneNumber = req.body.phoneNumber
+        //birthDay: req.body.birthDay,
+        trader.address = req.body.address
+        trader.postalCode = req.body.postalCode
+        trader.city = capitalize(req.body.city)
+        trader.latitude = req.body.latitude
+        trader.longitude = req.body.longitude
+        trader.siretNumber = req.body.siretNumber
+        trader.iban = req.body.iban
 
         if (req.body.country && req.body.country !== "") {
             trader.country = capitalize(req.body.country)
@@ -354,7 +356,7 @@ exports.allTraders = async (req, res, next) => {
         })
             .skip((page - 1) * pagination)
             .limit(pagination)
-            .select('_id email firstName lastName nameSociety iban phoneNumber')
+            .select('_id email firstName lastName nameSociety address postalCode city latitude longitude iban phoneNumber')
             .sort({ created_at: -1 });
 
         return res.json({

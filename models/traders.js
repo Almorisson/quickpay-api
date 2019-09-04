@@ -23,6 +23,8 @@ const TraderSchema = mongoose.Schema({
     address: { type: String, required: true, unique: true, minLength: 10, maxLength: 200 },
     postalCode: { type: String, required: true, min: 5, max: 5 },
     city: { type: String, required: true, minLength: 3, maxLength: 50 },
+    latitude: { type: Number, required: false },
+    longitude: { type: Number, required: false },
     siretNumber: { type: String, required: true, unique: true, min: 10, max: 30 },
     iban: { type: String, required: true, minLength: 20, maxLength: 34, unique: true },
     resetPasswordLink: {
