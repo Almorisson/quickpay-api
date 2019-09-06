@@ -17,14 +17,16 @@ exports.createPayment = async (req, res, next) => {
     try {
         validationHandler(req)
         // Les données à envoyer à l'API de PAYPAL pour créer un paiement
+        let __base = null;
+        process.env.NODE_ENV === "production" ? __base =  'https://quickpay-api.herokuapp.com/' : __base = `http://${config.HOST}:${config.PORT}/`;
         const create_payment_json = {
             "intent": "authorize",
             "payer": {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": `https://quickpay-api.herokuapp.com/api/v1/payments/payment/execute`,
-                "cancel_url": `https://quickpay-api.herokuapp.com/api/v1/payments/payment/cancel`
+                "return_url": `${__base}api/v1/payments/payment/execute`,
+                "cancel_url": `${__base}/api/v1/payments/payment/cancel`
             },
             "transactions": [{
                 "amount": {
@@ -71,73 +73,77 @@ exports.executePayment = async (req, res, next) => {
             };
 
             const paymentId = req.query.paymentId;
+            try {
+                 await paypal.payment.execute(paymentId, execute_payment_json, async function (error, payment) {
+                    if (error) {
+                        console.log(error.response);
+                        throw error;
+                    } else {
+                        console.log("Get Payment Response");
+                        console.log(JSON.stringify(payment));
+                        // Opérations effectuées dans la BDD
+                        const pay = await new Payment();
+                        pay.paymentId = paymentId
+                        pay.payerId = req.query.PayerID
+                        pay.state = await payment.state
+                        pay.amount = await payment.transactions[0].amount.total
+                        pay.merchantId = await payment.transactions[0].payee.merchant_id
+                        pay.traderStoreName = payment.payer.payer_info.business_name
+                        pay.traderEmail = await payment.transactions[0].payee.email
+                        pay.customerEmail = await payment.payer.payer_info.email
+                        pay.shippingAddress.recipientName = await payment.payer.payer_info.shipping_address.recipient_name
+                        pay.shippingAddress.address = await payment.payer.payer_info.shipping_address.line1
+                        pay.shippingAddress.country = await payment.payer.payer_info.shipping_address.country
+                        pay.shippingAddress.city = await payment.payer.payer_info.shipping_address.city
+                        pay.shippingAddress.postalCode = await payment.payer.payer_info.shipping_address.postal_code
+                        pay.shippingAddress.codeCountry = await payment.payer.payer_info.shipping_address.code_country
 
-            await paypal.payment.execute(paymentId, execute_payment_json, async function (error, payment) {
-                if (error) {
-                    console.log(error.response);
-                    throw error;
-                } else {
-                    console.log("Get Payment Response");
-                    console.log(JSON.stringify(payment));
-                    // Opérations effectuées dans la BDD
-                    const pay = await new Payment();
-                    pay.paymentId = paymentId
-                    pay.payerId = req.query.PayerID
-                    pay.state = payment.state
-                    pay.amount = payment.transactions[0].amount.total
-                    pay.merchantId = payment.transactions[0].payee.merchant_id
-                    pay.traderStoreName = payment.payer.payer_info.business_name
-                    pay.traderEmail = payment.transactions[0].payee.email
-                    pay.customerEmail = payment.payer.payer_info.email
-                    pay.shippingAddress.recipientName = payment.payer.payer_info.shipping_address.recipient_name
-                    pay.shippingAddress.address = payment.payer.payer_info.shipping_address.line1
-                    pay.shippingAddress.country = payment.payer.payer_info.shipping_address.country
-                    pay.shippingAddress.city = payment.payer.payer_info.shipping_address.city
-                    pay.shippingAddress.postalCode = payment.payer.payer_info.shipping_address.postal_code
-                    pay.shippingAddress.codeCountry = payment.payer.payer_info.shipping_address.code_country
-                    pay.trader = await Trader.findOne({ email: payment.payment.transactions[0].payee.email })
-                        .populate("trader",
-                            '_id email firstName lastName iban siretNumber\
-                                                    nameSociety phoneNumber address postalCode city country'
-                        )
-                        .select("_id firstName lastName email iban nameSociety\
+                        pay.trader = await Trader.findOne({ email: pay.traderEmail })
+                            .populate("trader",
+                                '_id email firstName lastName iban siretNumber\
+                                                        nameSociety phoneNumber address postalCode city country'
+                            )
+                            .select("_id firstName lastName email iban nameSociety\
+                                                        phoneNumber nameSociety phoneNumber address postalCode city country"
+                            )
+                            .exec((err, res) => {
+                                if (err) {
+                                    return res.status.json({
+                                        error: "An error was occured while trying to save transactions in the database."
+                                    })
+                                }
+                            })
+                        pay.Customer = await Customer.findOne({ email: payment.payer.payer_info.email })
+                            .populate("trader",
+                                '_id email firstName lastName creditCard\
+                                                phoneNumber address postalCode city country'
+                            )
+                            .select("_id firstName lastName email\
                                                     phoneNumber nameSociety phoneNumber address postalCode city country"
-                        )
-                        .exec((err, res) => {
-                            if (err) {
-                                return res.status.json({
-                                    error: "An error was occured while trying to save transactions in the database."
-                                })
-                            }
-                        })
-                    pay.Customer = await Customer.findOne({ email: payment.payer.payer_info.email })
-                        .populate("trader",
-                            '_id email firstName lastName creditCard\
-                                              phoneNumber address postalCode city country'
-                        )
-                        .select("_id firstName lastName email\
-                                                phoneNumber nameSociety phoneNumber address postalCode city country"
-                        ).exec((err, res) => {
-                            if (err) {
-                                return res.status.json({
-                                    error: "An error was occured while trying to save transactions in the database."
-                                })
-                            }
-                        })
+                            ).exec((err, res) => {
+                                if (err) {
+                                    return res.status.json({
+                                        error: "An error was occured while trying to save transactions in the database."
+                                    })
+                                }
+                            })
 
-                    // Save payment in the database
-                    await pay.save(err => {
-                        if (err) {
-                            let error = new Error("Wrong Request ! You don't have permissions to update profile Trader.");
-                            error.statusCode = 400;
-                            throw error;
-                        }
-                        return res.status(400).json(err)
-                    });
+                        // Save payment in the database
+                        await pay.save(err => {
+                            if (err) {
+                                let error = new Error("Wrong Request ! You don't have permissions to update profile Trader.");
+                                error.statusCode = 400;
+                                throw error;
+                            }
+                            return res.status(400).json(err)
+                        });
 
-                    return res.send({ payment: pay })
+                        return res.redirect({ payment: pay })
+                    }
+                });
+                } catch (error) {
+                    next(error)
                 }
-            });
         }
     } catch (error) {
         next(error)
