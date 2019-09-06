@@ -138,7 +138,7 @@ exports.executePayment = async (req, res, next) => {
                             return res.status(400).json(err)
                         });
 
-                        return res.redirect({ payment: pay })
+                        
                     }
                 });
                 } catch (error) {

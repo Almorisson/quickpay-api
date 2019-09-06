@@ -21,7 +21,7 @@ const CustomerSchema = mongoose.Schema({
     city: {type: String, required: true, minLength: 3, maxLength: 50},
     codeCountry: {type: String, required: true, default: "FR"},
     birthDay: {type: Date, required: false},
-    creditCard: {type: String, required: false, min: 16, max: 20, unique: true, index: true},
+    creditCard: {type: String, required: false, min: 16, max: 20},
     resetPasswordLink: {
         data: String,
         default: ""
