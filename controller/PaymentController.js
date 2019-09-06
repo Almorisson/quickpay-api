@@ -71,7 +71,8 @@ exports.executePayment = async (req, res, next) => {
             const execute_payment_json = {
                 "payer_id": req.query.PayerID
             };
-
+            let __base = null
+        process.env.NODE_ENV === "production" ? __base =  'https://quickpay-api.herokuapp.com/' : __base = `http://${config.HOST}:${config.PORT}/`;
             const paymentId = req.query.paymentId;
             try {
                  await paypal.payment.execute(paymentId, execute_payment_json, async function (error, payment) {
@@ -98,52 +99,54 @@ exports.executePayment = async (req, res, next) => {
                         pay.shippingAddress.postalCode = await payment.payer.payer_info.shipping_address.postal_code
                         pay.shippingAddress.codeCountry = await payment.payer.payer_info.shipping_address.code_country
 
-                        pay.trader = await Trader.findOne({ email: pay.traderEmail })
-                            .populate("trader",
-                                '_id email firstName lastName iban siretNumber\
-                                                        nameSociety phoneNumber address postalCode city country'
-                            )
-                            .select("_id firstName lastName email iban nameSociety\
-                                                        phoneNumber nameSociety phoneNumber address postalCode city country"
-                            )
-                            .exec((err, res) => {
-                                if (err) {
-                                    return res.status.json({
-                                        error: "An error was occured while trying to save transactions in the database."
-                                    })
-                                }
-                            })
-                        pay.Customer = await Customer.findOne({ email: payment.payer.payer_info.email })
-                            .populate("trader",
-                                '_id email firstName lastName creditCard\
-                                                phoneNumber address postalCode city country'
-                            )
-                            .select("_id firstName lastName email\
-                                                    phoneNumber nameSociety phoneNumber address postalCode city country"
-                            ).exec((err, res) => {
-                                if (err) {
-                                    return res.status.json({
-                                        error: "An error was occured while trying to save transactions in the database."
-                                    })
-                                }
-                            })
+                        // pay.trader = await Trader.findOne({ email: pay.traderEmail })
+                        //     .populate("trader",
+                        //         '_id email firstName lastName iban siretNumber\
+                        //                                 nameSociety phoneNumber address postalCode city country'
+                        //     )
+                        //     .select("_id firstName lastName email iban nameSociety\
+                        //                                 phoneNumber nameSociety phoneNumber address postalCode city country"
+                        //     )
+                        //     .exec((err, res) => {
+                        //         if (err) {
+                        //             return res.status.json({
+                        //                 error: "An error was occured while trying to save transactions in the database."
+                        //             })
+                        //         }
+                        //     })
+                        // pay.Customer = await Customer.findOne({ email: payment.payer.payer_info.email })
+                        //     .populate("trader",
+                        //         '_id email firstName lastName creditCard\
+                        //                         phoneNumber address postalCode city country'
+                        //     )
+                        //     .select("_id firstName lastName email\
+                        //                             phoneNumber nameSociety phoneNumber address postalCode city country"
+                        //     ).exec((err, res) => {
+                        //         if (err) {
+                        //             return res.status.json({
+                        //                 error: "An error was occured while trying to save transactions in the database."
+                        //             })
+                        //         }
+                        //     })
 
                         // Save payment in the database
-                        await pay.save(err => {
-                            if (err) {
-                                let error = new Error("Wrong Request ! You don't have permissions to update profile Trader.");
-                                error.statusCode = 400;
-                                throw error;
-                            }
-                            return res.status(400).json(err)
-                        });
+                        // await pay.save(err => {
+                        //     if (err) {
+                        //         let error = new Error("Wrong Request ! You don't have permissions to update profile Trader.");
+                        //         error.statusCode = 400;
+                        //         throw error;
+                        //     }
+                        //     return res.redirect(`${__base}api/v1/customers/login`)
+                        // });
 
-                        
+                        return payment.state == "approved" ? res.send({
+                            message: "Payment effectué avec succès"
+                        }): res.redirect(create_payment_json.redirect_urls.cancel_url);
                     }
                 });
                 } catch (error) {
                     next(error)
-                }
+            }
         }
     } catch (error) {
         next(error)
