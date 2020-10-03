@@ -12,3 +12,6 @@ Contactless Payment by QR code reinvented
 QuickPay is a new solution for merchants and privates. This is a contactless payment application via QRcode for any smartphone.
 
 
+**IMPORTANT NOTE**: You can use the api alone in your project or test it. It's already automatically deploy on [Heroku](https://heroku.com)
+
+**[QuickPay API](https://quickpay-api.herokuapp.com/)**
